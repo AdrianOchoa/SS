@@ -1,0 +1,118 @@
+<%@ page %>
+<%@page session="true" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<head>
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap core -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" type="text/css">
+
+    <!-- Customized files -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css" type="text/css">
+    <script src="${pageContext.request.contextPath}/js/navbar.js" type="text/javascript"></script>
+</head>
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top marginBottom-0" role="navigation">
+    <!-- for smaller screens -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/home.jsp">
+            <img src="${pageContext.request.contextPath}/img/vw-small.png" alt="logo" class="img-logo">
+        </a>
+    </div>
+
+    <!-- regular navbar -->
+    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <!-- Users -->
+            <!-- this is only for admin user -->
+            <li class="dropdown">
+                <c:if test="${rol == 'admin'}">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">Usuarios<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/user/userAdd.jsp">Alta</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/user/userDelete.jsp">Baja</a></li>
+                    </ul>
+                </c:if>
+                <!--<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">Usuarios<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="userAdd.jsp">Alta</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="userDelete.jsp">Baja</a></li>
+                </ul>-->
+            </li>
+            <!-- Criteria -->
+            <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">Criterios<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="${pageContext.request.contextPath}/criteria/criteriaAdd.jsp">Alta</a></li>
+                    <li role="separator" class="divider"></li>
+                    <!-- this options are onlye for admin user -->
+                    <c:if test="${rol == 'admin'}">
+                        <li><a href="${pageContext.request.contextPath}/criteria/criteriaToBeApproved.jsp">Aprobar</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/criteria/criteriaEdit.jsp">Edición</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/criteria/criteriaDelete.jsp">Baja</a></li>
+                        <li role="separator" class="divider"></li>
+                     </c:if>
+                    <c:if test="${rol == 'bussiness'}">
+                        <li><a href="${pageContext.request.contextPath}/criteria/criteriaToBeApprovedByBussiness.jsp">Aprobar</a></li>
+                        <li role="separator" class="divider"></li>
+                    </c:if>
+                    <!-- this option is for regular user also -->
+                    <li><a href="${pageContext.request.contextPath}/criteria/criteriaList.jsp">Lista</a></li>
+                </ul>
+            </li>
+            <!-- Files -->
+            <!-- this option is only for admin user -->
+            <c:if test="${rol == 'admin'}">
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">Archivos<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/upload/uploadClaimFile.jsp">Claim Criteria</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/upload/uploadEasyFile.jsp">Easy</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/upload/uploadRocFile.jsp">ROC</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/upload/uploadMonthlyRocFile.jsp">ROC Mensual</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/upload/uploadDataFile.jsp">Data Warehouse</a></li>
+                    </ul>
+                </li>
+            </c:if>
+            <!-- Reports -->
+            <!-- this option is only for admin user -->
+            <c:if test="${rol == 'admin'}">
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">Reportes<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/report/reportAdjustByAnalist.jsp">Ajuste con registro de analista</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/report/reportAdjustByCriteria.jsp">Ajuste por criterio inteligente</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/report/reportCanceledClaimsByAnalist.jsp">Cancelaciones con registro de analista</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/report/reportCanceledClaimsByCriteria.jsp">Cancelaciones por criterio inteligente</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="${pageContext.request.contextPath}/report/reportTotalClaimsByBrand.jsp">Total de reclamaciones por marca</a></li>
+                    </ul>
+                </li>
+            </c:if>
+            <!-- Logout -->
+            <li><a href="${pageContext.request.contextPath}/LogoutServlet">Cerrar Sesión</a></li>
+        </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+</nav>
+</html>
