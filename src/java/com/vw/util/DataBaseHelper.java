@@ -2252,6 +2252,7 @@ public class DataBaseHelper {
                 + "update criterios_logicos.dbo.criterio\n"
                 + "set criterio_aprobado_negocio = 's'\n"
                 + "where criterio_ID = '" + id + "'";
+        System.out.println(queryContent);
         return executeQuery(queryContent, false);
     }
 

@@ -37,12 +37,12 @@
 
         <!--Main Section -->
         <div class="container">
-            <form class="well form-horizontal" method="post" action="${pageContext.request.contextPath}/CriteriaBussinessApproveServlet" id="form" name="form">
+            <form class="well form-horizontal" method="post" action="${pageContext.request.contextPath}/CriteriaBussinessApprovedServlet">
                 <fieldset>
                     <!-- Form Name -->
                     <legend>Criterio a aprobar ${id}</legend>
 
-                    <input value="${id}" name="id">
+                    <input type="hidden" value="${id}" name="id">
 
                     <!-- Select basic for estatus-->
                     <div class="form-group">
@@ -207,13 +207,20 @@
                         <label class="col-md-4 control-label"></label>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-success">Aprobar<span class="glyphicon glyphicon-send"></span></button>
-                            <button type="submit" class="btn btn-danger">Eliminar<span class="glyphicon glyphicon-send"></span></button>
+
+                            </form>
+                            <form class="well form-horizontal" method="post" action="${pageContext.request.contextPath}/CriteriaDeleteCriteriabyIDServlet" id="form" name="form">
+                                <input type="hidden" value="${id}" name="id">
+                                <button type="submit" class="btn btn-danger">Eliminar<span class="glyphicon glyphicon-send"></span></button>
+                            </form>
+
                         </div>
                     </div>
+                                
                 </fieldset>
-            </form>
+            
         </div>
         <div class="clearfix">
-        </div>
-    </body>
+        </di
+</body>
 </html>

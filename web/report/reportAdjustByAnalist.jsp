@@ -49,7 +49,7 @@
             <hr>
 
             <form class="well form-horizontal" method="post"  action="${pageContext.request.contextPath}/ReportAdjustByAnalistServlet">
-                <legend>Seleccione la fecha del reporte:</legend>
+                <h3>Seleccione la fecha de inicio del reporte:</h3>
                 <div class="form-group">
                     <div class="col-md-4 selectContainer">
                         <div class="input-group">
@@ -76,6 +76,48 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                 <select name="anio" class="form-control selectpicker" required>
+                                    <option value="" >Seleccione el año</option>
+                                    <option>2013</option>
+                                    <option>2014</option>
+                                    <option>2015</option>
+                                    <option>2016</option>
+                                    <option>2017</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <br>
+                <br>
+                
+                <legend>Seleccione la fecha del final del reporte:</legend>
+                <div class="form-group">
+                    <div class="col-md-4 selectContainer">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <select name="mesFin" class="form-control selectpicker" required>
+                                <option value="" >Seleccione el mes</option>
+                                <option>Enero</option>
+                                <option>Febrero</option>
+                                <option>Marzo</option>
+                                <option>Abri</option>
+                                <option>Mayo</option>
+                                <option>Junio</option>
+                                <option>Julio</option>
+                                <option>Agosto</option>
+                                <option>Septiembre</option>
+                                <option>Octubre</option>
+                                <option>Noviembre</option>
+                                <option>Diciembre</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-4 selectContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <select name="anioFin" class="form-control selectpicker" required>
                                     <option value="" >Seleccione el año</option>
                                     <option>2013</option>
                                     <option>2014</option>

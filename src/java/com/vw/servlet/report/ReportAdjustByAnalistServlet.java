@@ -33,8 +33,9 @@ public class ReportAdjustByAnalistServlet extends HttpServlet {
         String year = request.getParameter("anio");
         String days = getDays(month);
         String initialDate = year + month + "01";
-        String finalDate = year + month + days;
-        System.out.println("Initial Date: " + initialDate + " Final: " + finalDate);
+        String monthEnd = getMonth(request.getParameter("mesFin").toLowerCase());
+        String yearEnd = request.getParameter("anioFin");
+        String finalDate = yearEnd + monthEnd + getDays(monthEnd);
         List<ResultSet> result = 
                 new ReportingService().generateAdjustByAnalistReport(initialDate, finalDate);
         HttpSession session = request.getSession();

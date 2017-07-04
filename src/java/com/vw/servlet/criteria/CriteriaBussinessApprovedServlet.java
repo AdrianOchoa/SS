@@ -25,6 +25,7 @@ public class CriteriaBussinessApprovedServlet extends HttpServlet {
     protected void doPost (HttpServletRequest request, HttpServletResponse response) 
             throws IOException, ServletException {
         String id = request.getParameter("id");
+        System.out.println("id: " + id);
         String nextPage = "";
         HttpSession session = request.getSession();
         if(new CriteriaService().setBussinessApprovedCriteria(id)) {

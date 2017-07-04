@@ -31,6 +31,7 @@
         </script>
     </head>
     <body >
+        <!--<img src="${pageContext.request.contextPath}/img/vw-puebla.jpg">-->
         <div class="login-wrap">
             <div class="login-html">
                 <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Iniciar Sesión</label>
