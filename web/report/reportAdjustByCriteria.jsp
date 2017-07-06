@@ -29,10 +29,12 @@
         <script type="text/javascript">
             <c:choose>
                 <c:when test="${empty logged}" >
-            window.location = "http://localhost:8080/SS/forbidden.jsp";
+                    window.location = "http://localhost:8080/SS/forbidden.jsp";
                 </c:when>
                 <c:when test="${rol != 'admin'}">
-            window.location = "http://localhost:8080/SS/forbidden.jsp";
+                    <c:if test="${rol != 'bussiness'}">
+                        window.location = "http://localhost:8080/SS/forbidden.jsp";
+                    </c:if>
                 </c:when>
             </c:choose>
         </script>
