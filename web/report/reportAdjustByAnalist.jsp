@@ -59,7 +59,7 @@
                                 <option>Enero</option>
                                 <option>Febrero</option>
                                 <option>Marzo</option>
-                                <option>Abri</option>
+                                <option>Abril</option>
                                 <option>Mayo</option>
                                 <option>Junio</option>
                                 <option>Julio</option>
@@ -77,9 +77,6 @@
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                 <select name="anio" class="form-control selectpicker" required>
                                     <option value="" >Seleccione el año</option>
-                                    <option>2013</option>
-                                    <option>2014</option>
-                                    <option>2015</option>
                                     <option>2016</option>
                                     <option>2017</option>
                                 </select>
@@ -119,9 +116,6 @@
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                 <select name="anioFin" class="form-control selectpicker" required>
                                     <option value="" >Seleccione el año</option>
-                                    <option>2013</option>
-                                    <option>2014</option>
-                                    <option>2015</option>
                                     <option>2016</option>
                                     <option>2017</option>
                                 </select>

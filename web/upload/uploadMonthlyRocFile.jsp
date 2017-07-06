@@ -49,34 +49,48 @@
                     <!-- Standar Form -->
                     <h4>Selecciona archivo ROC Mensual</h4>
                     <form action="${pageContext.request.contextPath}/UploadMonthlyRocFileServlet" method="post" enctype="multipart/form-data" id="js-upload-form">
+                        
                         <div class="form-inline">
                             <div class="form-group">
                                 <input type="file" name="file" id="js-upload-files" required>
                             </div>
                             <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Subir Archivo</button>
                         </div>
+                        <br>
+                        <br>
+                        <div class="col-md-4 selectContainer">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <select name="mes" class="form-control selectpicker" required>
+                                <option value="" >Seleccione el mes</option>
+                                <option>Enero</option>
+                                <option>Febrero</option>
+                                <option>Marzo</option>
+                                <option>Abril</option>
+                                <option>Mayo</option>
+                                <option>Junio</option>
+                                <option>Julio</option>
+                                <option>Agosto</option>
+                                <option>Septiembre</option>
+                                <option>Octubre</option>
+                                <option>Noviembre</option>
+                                <option>Diciembre</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-4 selectContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <select name="anio" class="form-control selectpicker" required>
+                                    <option value="" >Seleccione el año</option>
+                                    <option>2016</option>
+                                    <option>2017</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     </form>
-
-                    <!-- Drop Zone -->
-                    <h4>O arrastra archivos aquí</h4>
-                    <div class="upload-drop-zone" id="drop-zone">
-                        Arrastra archivos aquí
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                            <span class="sr-only">0% Completado</span>
-                        </div>
-                    </div>
-
-                    <!-- Upload Finished -->
-                    <div class="js-upload-finished">
-                        <h3>Archivo procesado</h3>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">Terminado</span>easy_agosto.xlsx</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div> <!-- /container -->

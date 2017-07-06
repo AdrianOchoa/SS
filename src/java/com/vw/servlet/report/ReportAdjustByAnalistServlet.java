@@ -31,7 +31,6 @@ public class ReportAdjustByAnalistServlet extends HttpServlet {
         String nextPage;
         String month = getMonth(request.getParameter("mes").toLowerCase());
         String year = request.getParameter("anio");
-        String days = getDays(month);
         String initialDate = year + month + "01";
         String monthEnd = getMonth(request.getParameter("mesFin").toLowerCase());
         String yearEnd = request.getParameter("anioFin");

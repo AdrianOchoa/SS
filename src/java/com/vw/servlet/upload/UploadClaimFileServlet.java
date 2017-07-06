@@ -75,7 +75,7 @@ public class UploadClaimFileServlet extends HttpServlet {
 
         HttpSession session;
         String nextPage;
-        if (uploadService.uploadFile("claim")) {
+        if (uploadService.uploadFile("claim", "", "")) {
             nextPage = "home.jsp";
             session = request.getSession();
             session.setAttribute("message", "El archivo se proceso correctamente.");

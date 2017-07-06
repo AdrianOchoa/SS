@@ -31,9 +31,11 @@ public class ReportCanceledClaimsByCriteriaServlet extends HttpServlet {
         String nextPage;
         String month = getMonth(request.getParameter("mes").toLowerCase());
         String year = request.getParameter("anio");
-        String days = getDays(month);
         String initialDate = year + month + "01";
-        String finalDate = year + month + days;
+        String yearEnd = request.getParameter("anioFin");
+        String monthEnd = getMonth(request.getParameter("mesFin").toLowerCase());
+        String daysEnd = getDays(monthEnd);
+        String finalDate = yearEnd + monthEnd + daysEnd;
         List<ResultSet> result = 
                 new ReportingService().generateCancelledClaimsByCriteriaReport(initialDate, finalDate);
         HttpSession session = request.getSession();

@@ -19,7 +19,7 @@ public class UploadService {
         this.xssfw = xssfw;
     }
 
-    public boolean uploadFile(String fileType) {
+    public boolean uploadFile(String fileType, String month, String year) {
         if(fileType.equals("easy")) {
             if(new ExcelFileHandler(xssfw).processEasyFile()) {
                 return true;
@@ -37,7 +37,7 @@ public class UploadService {
                 return true;
             }
         }  else if(fileType.equals("roc_mensual")) {
-            if(new ExcelFileHandler(xssfw).processMonthlyRocFile()) {
+            if(new ExcelFileHandler(xssfw).processMonthlyRocFile(month, year)) {
                 return true;
             }
         }

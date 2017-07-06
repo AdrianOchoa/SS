@@ -56,27 +56,6 @@
                             <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Subir Archivo</button>
                         </div>
                     </form>
-
-                    <!-- Drop Zone -->
-                    <h4>O arrastra archivos aquí</h4>
-                    <div class="upload-drop-zone" id="drop-zone">
-                        Arrastra archivos aquí
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                            <span class="sr-only">0% Complete</span>
-                        </div>
-                    </div>
-
-                    <!-- Upload Finished -->
-                    <div class="js-upload-finished">
-                        <h3>Archivo procesado</h3>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">Terminado</span>roc_agosto.xlsx</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div> <!-- /container -->

@@ -11,7 +11,7 @@ package com.vw.model;
  * 
  * @author Adrián Ochoa Martínez
  */
-public class ResultSetForTotalClaims {
+public class ResultSetForTotalClaims implements Comparable<ResultSetForTotalClaims> {
     
     private String totalClaims;
     private String brand;
@@ -51,6 +51,15 @@ public class ResultSetForTotalClaims {
      */
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    @Override
+    public int compareTo(ResultSetForTotalClaims o) {
+        if(this.brand.compareTo(o.brand) == 0) {
+            return this.totalClaims.compareTo(o.totalClaims);
+        } else {
+            return this.brand.compareTo(o.brand);
+        }
     }
 
 }

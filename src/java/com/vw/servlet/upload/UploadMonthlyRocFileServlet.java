@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.vw.servlet.upload;
 
 import com.vw.service.UploadService;
@@ -10,6 +9,7 @@ import com.vw.util.ExcelConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -30,58 +30,72 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
         maxRequestSize = 1024 * 1024 * 50)
 @WebServlet("/UploadMonthlyRocFileServlet")
 public class UploadMonthlyRocFileServlet extends HttpServlet {
-    
+
     private static final String SAVE_DIR = "uploadFiles";
 
     @Override
-    protected void doPost (HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
+
         //gets absolute path of application
         String appPath = request.getServletContext().getRealPath("");
         //Construct the directory
         String savePath = appPath + File.separator + SAVE_DIR;
-        
+
         File fileSaveDir = new File(savePath);
-        
-        if(!fileSaveDir.exists()) {
+
+        if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }
-        
+
         String fullFile = null;
         String fileName = null;
-        String fileExtension = null;
-        
-        for(Part part : request.getParts()) {
+        String fileExtension = "";
+
+        for (Part part : request.getParts()) {
             fileName = extractFileName(part);
+            if(fileName == null) {
+                break;
+            }
+            if(fileName != null) {
+                if(fileName.isEmpty()) {
+                    break;
+                }
+            }
+            System.out.println("File name: " + fileName);
             fileExtension = fileName.split("[.]+")[1];
-            fileName = new File(fileName).getName();
             fullFile = savePath + File.separator + fileName;
+            System.out.println("Antes de part.write: " + fullFile);
             part.write(fullFile);
+            System.out.println("Despues de part.write: " + fullFile);
         }
-        
+
+
         XSSFWorkbook xssfw = null;
-        
+
         if (fileExtension.toLowerCase().equals("xls")) {
             try {
-                //            xssfw = ExcelConverter.convertHSSFWorkbookToXSSFWorkbook(
-                //                    new HSSFWorkbook(new FileInputStream(fullFile)));
                 xssfw = new ExcelConverter(
                         new HSSFWorkbook(new FileInputStream(fullFile))).call();
             } catch (Exception ex) {
-                System.out.println(ex);
+                System.out.println("Excepción en fileExtension.toLowerCase(): " + ex);
             }
-        } else if(fileExtension.toLowerCase().equals("xlsx")){
+        } else if (fileExtension.toLowerCase().equals("xlsx")) {
             xssfw = new XSSFWorkbook(new FileInputStream(fullFile));
         }
-        
+
         UploadService uploadService = new UploadService(xssfw);
-        
+
         HttpSession session;
         String nextPage;
-        if(uploadService.uploadFile("roc_mensual")) {
+
+        String month = getMonth(request.getParameter("mes").toLowerCase());
+        String year = request.getParameter("anio");
+
+        if (uploadService.uploadFile("roc_mensual", month, year)) {
             nextPage = "home.jsp";
             session = request.getSession();
-            session.setAttribute("message", "El archivo se proceso correctamente.");
+            session.setAttribute("message", "El archivo se procesó correctamente.");
         } else {
             nextPage = "error.jsp";
             session = request.getSession();
@@ -90,17 +104,34 @@ public class UploadMonthlyRocFileServlet extends HttpServlet {
         File file = new File(fullFile);
         file.delete();
         request.getRequestDispatcher(nextPage).forward(request, response);
+
     }
-    
-    private String extractFileName (Part part) {
+
+    private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
-        String [] items = contentDisp.split(";");
+        String[] items = contentDisp.split(";");
         for (String s : items) {
-            if(s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length() -1);
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length() - 1);
             }
         }
         return "";
     }
-    
+
+    private String getMonth(String month) {
+        HashMap<String, String> map = new HashMap();
+        map.put("enero", "01");
+        map.put("febrero", "02");
+        map.put("marzo", "03");
+        map.put("abril", "04");
+        map.put("mayo", "05");
+        map.put("junio", "06");
+        map.put("julio", "07");
+        map.put("agosto", "08");
+        map.put("septiembre", "09");
+        map.put("octubre", "10");
+        map.put("noviembre", "11");
+        map.put("diciembre", "12");
+        return map.get(month);
+    }
 }

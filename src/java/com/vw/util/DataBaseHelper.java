@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -726,9 +725,8 @@ public class DataBaseHelper {
             String criteriaIDFromFilteredClaims = entry.getValue();
             if (dwhClaims.containsKey(claimIDFromFilteredClaims)) {
                 if (!auxResult.containsKey(criteriaIDFromFilteredClaims)) {
-                    com.vw.model.ResultSet resultSet = getResultSetFromDataWarehouse(
-                            false, criteriaIDFromFilteredClaims,
-                            filteredClaims, dwhClaims);
+                    com.vw.model.ResultSet resultSet = getResultSetFromDataWarehouse(false,
+                            criteriaIDFromFilteredClaims, initialDate, finalDate);
                     double amount = getAmountFromRoc(
                             claimIDFromFilteredClaims) - getAmountFromDWH(claimIDFromFilteredClaims);
                     double d;
@@ -739,8 +737,6 @@ public class DataBaseHelper {
                     }
                     amountsByIdCriteria.put(criteriaIDFromFilteredClaims, d + amount);
                     auxResult.put(criteriaIDFromFilteredClaims, resultSet);
-//                    result.add(resultSet);
-                    System.out.println("ResulSet from dwh " + criteriaIDFromFilteredClaims);
                 } else {
                     double amount = getAmountFromRoc(
                             claimIDFromFilteredClaims) - getAmountFromDWH(claimIDFromFilteredClaims);
@@ -822,8 +818,7 @@ public class DataBaseHelper {
             String criteriaID = entry.getValue();
             if (rocClaims.containsKey(claimFroClaimCriteriaID)) {
                 if (!auxResult.containsKey(criteriaID)) {
-                    com.vw.model.ResultSet resultSet = getResultSetFromRoc(true, criteriaID,
-                            filteredClaims, rocClaims);
+                    com.vw.model.ResultSet resultSet = getResultSetFromRoc(true, criteriaID, initialDate, finalDate);
 //                    result.add(resultSet);
                     double amount = getAmountFromClaimCriteria(claimFroClaimCriteriaID) - getAmountFromRoc(claimFroClaimCriteriaID);
                     auxResult.put(criteriaID, resultSet);
@@ -848,8 +843,7 @@ public class DataBaseHelper {
                 }
             } else if (dwhClaims.containsKey(claimFroClaimCriteriaID)) {
                 if (!auxResult.containsKey(criteriaID)) {
-                    com.vw.model.ResultSet resultSet = getResultSetFromDataWarehouse(true, criteriaID,
-                            filteredClaims, dwhClaims);
+                    com.vw.model.ResultSet resultSet = getResultSetFromDataWarehouse(true, criteriaID, initialDate, finalDate);
 //                    result.add(resultSet);
                     double amount = getAmountFromClaimCriteria(claimFroClaimCriteriaID) - getAmountFromDWH(claimFroClaimCriteriaID);
                     auxResult.put(criteriaID, resultSet);
@@ -933,7 +927,7 @@ public class DataBaseHelper {
 
         //Now, we're gonna get all the claims from the easy
         HashMap<String, String> easyClaims = getEasyClaims(initialDate, finalDate);
-        
+
         HashMap<String, Double> amountsByCriteria = new HashMap();
 
         for (Map.Entry<String, String> entry : filteredClaims.entrySet()) {
@@ -950,8 +944,7 @@ public class DataBaseHelper {
             }
             criteriaID = entry.getValue();
             if (!auxResult.containsKey(criteriaID)) {
-                com.vw.model.ResultSet resultSet = getResultSetFromCanceledClaimCriteria(true, criteriaID, filteredClaims);
-//                result.add(resultSet);
+                com.vw.model.ResultSet resultSet = getResultSetFromCanceledClaimCriteria(true, criteriaID, initialDate, finalDate);
                 double amount = getAmountFromClaimCriteria(claimCriteriaClaimID);
                 double d;
                 try {
@@ -972,8 +965,8 @@ public class DataBaseHelper {
                 amountsByCriteria.put(criteriaID, d + amount);
             }
         }
-        
-        for(Map.Entry<String, com.vw.model.ResultSet> entry : auxResult.entrySet()) {
+
+        for (Map.Entry<String, com.vw.model.ResultSet> entry : auxResult.entrySet()) {
             String criteriaID = entry.getKey();
             com.vw.model.ResultSet res = entry.getValue();
             DecimalFormat decimalFormat = new DecimalFormat();
@@ -982,8 +975,8 @@ public class DataBaseHelper {
             res.setMonto(amount);
             auxResult.put(criteriaID, res);
         }
-        
-        for(Map.Entry<String, com.vw.model.ResultSet> entry : auxResult.entrySet()) {
+
+        for (Map.Entry<String, com.vw.model.ResultSet> entry : auxResult.entrySet()) {
             result.add(entry.getValue());
         }
 
@@ -1033,7 +1026,7 @@ public class DataBaseHelper {
 
         //Now, we're gonna get all the claims from the easy
         HashMap<String, String> easyClaims = getEasyClaims(initialDate, finalDate);
-        
+
         HashMap<String, Double> amountsByCriteria = new HashMap();
 
         for (Map.Entry<String, String> entry : filteredClaims.entrySet()) {
@@ -1050,8 +1043,7 @@ public class DataBaseHelper {
             }
             criteriaID = entry.getValue();
             if (!auxResult.containsKey(criteriaID)) {
-                com.vw.model.ResultSet resultSet = getResultSetFromCanceledRoc(false, criteriaID, filteredClaims, claimCriteriaClaimID);
-//                result.add(resultSet);
+                com.vw.model.ResultSet resultSet = getResultSetFromCanceledRoc(false, criteriaID, initialDate, finalDate);
                 double amount = getAmountFromRoc(claimCriteriaClaimID);
                 double d;
                 try {
@@ -1072,8 +1064,8 @@ public class DataBaseHelper {
                 amountsByCriteria.put(criteriaID, d + amount);
             }
         }
-        
-        for(Map.Entry<String, com.vw.model.ResultSet> entry : auxResult.entrySet()) {
+
+        for (Map.Entry<String, com.vw.model.ResultSet> entry : auxResult.entrySet()) {
             String criteriaID = entry.getKey();
             com.vw.model.ResultSet res = entry.getValue();
             DecimalFormat decimalFormat = new DecimalFormat();
@@ -1082,8 +1074,8 @@ public class DataBaseHelper {
             res.setMonto(amount);
             auxResult.put(criteriaID, res);
         }
-        
-        for(Map.Entry<String, com.vw.model.ResultSet> entry : auxResult.entrySet()) {
+
+        for (Map.Entry<String, com.vw.model.ResultSet> entry : auxResult.entrySet()) {
             result.add(entry.getValue());
         }
 
@@ -1194,9 +1186,9 @@ public class DataBaseHelper {
     }
 
     private com.vw.model.ResultSet getResultSetFromCanceledClaimCriteria(boolean isIntelligentCriteria,
-            String criteriaID, LinkedHashMap<String, String> filteredClaims) {
+            String criteriaID, String initialDate, String finalDate) {
         String criteriaType = (isIntelligentCriteria) ? "Inteligente" : getCriteriaType(criteriaID);
-        String hitNumber = getCriteriaHits(criteriaID);
+        String hitNumber = getCriteriaHits(criteriaID, initialDate, finalDate);
         String amount = "0.0";
         String applicant = getCriteriaApplicant(criteriaID);
         String brand = getCriteriaBrand(criteriaID).toUpperCase();
@@ -1206,10 +1198,9 @@ public class DataBaseHelper {
     }
 
     private com.vw.model.ResultSet getResultSetFromCanceledRoc(boolean isIntelligentCriteria,
-            String criteriaID, LinkedHashMap<String, String> filteredClaims,
-            String claimID) {
+            String criteriaID, String initialDate, String finalDate) {
         String criteriaType = (isIntelligentCriteria) ? "Inteligente" : getCriteriaType(criteriaID);
-        String hitNumber = getCriteriaHits(criteriaID);
+        String hitNumber = getCriteriaHits(criteriaID, initialDate, finalDate);
         String amount = "0.0";
         String applicant = getCriteriaApplicant(criteriaID);
         String brand = getCriteriaBrand(criteriaID).toUpperCase();
@@ -1230,10 +1221,9 @@ public class DataBaseHelper {
      * @return a com.vw.model.ResultSet
      */
     private com.vw.model.ResultSet getResultSetFromDataWarehouse(boolean isIntelligentCriteria,
-            String criteriaID, LinkedHashMap<String, String> filteredClaims,
-            HashMap<String, String> dwhClaims) {
+            String criteriaID, String initialDate, String finalDate) {
         String criteriaType = (isIntelligentCriteria) ? "Inteligente" : getCriteriaType(criteriaID);
-        String hitNumber = getCriteriaHits(criteriaID);
+        String hitNumber = getCriteriaHits(criteriaID, initialDate, finalDate);
         String amount = "0.0";
         String applicant = getCriteriaApplicant(criteriaID);
         String brand = getCriteriaBrand(criteriaID).toUpperCase();
@@ -1254,10 +1244,9 @@ public class DataBaseHelper {
      * @return
      */
     private com.vw.model.ResultSet getResultSetFromRoc(boolean isIntelligentCriteria,
-            String criteriaID,
-            LinkedHashMap<String, String> filteredClaims, HashMap<String, String> rocClaims) {
+            String criteriaID, String initialDate, String finalDate) {
         String criteriaType = (isIntelligentCriteria) ? "Inteligente" : getCriteriaType(criteriaID);
-        String hitNumber = getCriteriaHits(criteriaID);
+        String hitNumber = getCriteriaHits(criteriaID, initialDate, finalDate);
         String amount = "0.0";
         String applicant = getCriteriaApplicant(criteriaID);
         String brand = getCriteriaBrand(criteriaID).toUpperCase();
@@ -1275,13 +1264,10 @@ public class DataBaseHelper {
      * @return
      */
     private String getCriteriaDaysSinceActivation(String criteriaID) {
-        Calendar calendar = Calendar.getInstance();
-        criteriaID += calendar.get(Calendar.MONTH) + 1;
-        criteriaID += calendar.get(Calendar.YEAR);
         String daysSinceActivation = "0";
         String queryContent = "SELECT [roc_mensual_dias_activacion]\n"
                 + "FROM [criterios_logicos].[dbo].[roc_mensual]\n"
-                + "WHERE [roc_mensual_ID] = '" + criteriaID + "'";
+                + "WHERE [roc_mensual_criterio_ID] = '" + criteriaID + "'\n";
         ResultSet resultSet = resultSetFromQuery(queryContent);
         try {
             while (resultSet.next()) {
@@ -1343,124 +1329,6 @@ public class DataBaseHelper {
             System.out.println(ex);
         }
         return applicant;
-    }
-
-    /**
-     * This method will get the amount of money that a specific criteria
-     * affected. This amount it's the difference between the claim criteria
-     * claim value and the data warehouse claim value It's used in the
-     * getResultSetFromDataDWarehouse methods
-     *
-     * @param criteriaID
-     * @param filteredClaims
-     * @param dwhClaims
-     * @return
-     */
-    private String getClaimAmountFromDWH(String criteriaID,
-            LinkedHashMap<String, String> filteredClaims,
-            HashMap<String, String> dwhClaims) {
-        String amount = "";
-        double amountD = 0.0;
-        for (Map.Entry<String, String> entry : filteredClaims.entrySet()) {
-            String criteriaIdFromEntry = entry.getValue();
-            if (criteriaIdFromEntry.equals(criteriaID)) {
-                String claimID = entry.getKey();
-                if (dwhClaims.containsKey(claimID)) {
-                    double amountFromRoc = getAmountFromRoc(claimID);
-                    double amountFromDWH = getAmountFromDWH(claimID);
-                    amountD += (amountFromRoc - amountFromDWH);
-                }
-            }
-        }
-        DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        amount = "$" + decimalFormat.format(amountD);
-        return amount;
-    }
-
-    /**
-     * This method will get the amount of money that a specific criteria
-     * affected. This amount it's the difference between the claim criteria
-     * claim value and the roc claim value It's used in the
-     * getResultSetFromRocmethods
-     *
-     * @param criteriaID
-     * @param filteredClaims
-     * @param rocClaims
-     * @return
-     */
-    private String getClaimAmountFromRoc(String criteriaID,
-            LinkedHashMap<String, String> filteredClaims,
-            HashMap<String, String> rocClaims) {
-        String amount = "";
-        double amountD = 0.0;
-        for (Map.Entry<String, String> entry : filteredClaims.entrySet()) {
-            String criteriaIdFromEntry = entry.getValue();
-            if (criteriaID.equals(criteriaIdFromEntry)) {
-                String claimID = entry.getKey();
-                if (rocClaims.containsKey(claimID)) {
-                    double amountFromClaimCriteria = getAmountFromClaimCriteria(claimID);
-                    double amountFromRoc = getAmountFromRoc(claimID);
-                    amountD += (amountFromClaimCriteria - amountFromRoc);
-                }
-            }
-        }
-        DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        amount = "$" + decimalFormat.format(amountD);
-        return amount;
-    }
-
-    /**
-     * This method will get the amount of money that a specific criteria
-     * affected This amount came directly from the claim criteria It's used in
-     * the getResultSetFromClaimCriteria
-     *
-     * @param criteriaID
-     * @param filteredClaims
-     * @return
-     */
-    private String getClaimAmountFromClaimCriteria(String criteriaID,
-            LinkedHashMap<String, String> filteredClaims) {
-        String amount = "0.0";
-        double amountD = 0.0;
-        for (Map.Entry<String, String> entry : filteredClaims.entrySet()) {
-            String criteriaIdFromEntry = entry.getValue();
-            if (criteriaID.equals(criteriaIdFromEntry)) {
-                String claimID = entry.getKey();
-                double amountFromClaimCriteria = getAmountFromClaimCriteria(claimID);
-                amountD += amountFromClaimCriteria;
-            }
-        }
-        DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        amount = "$" + decimalFormat.format(amountD);
-        return amount;
-    }
-
-    /**
-     *
-     * @param criteriaID
-     * @param filteredClaims
-     * @return
-     */
-    private String getClaimAmountFromRoc(String criteriaID,
-            LinkedHashMap<String, String> filteredClaims,
-            String idClaim) {
-        String amount = "0.0";
-        double amountD = 0.0;
-        for (Map.Entry<String, String> entry : filteredClaims.entrySet()) {
-            String criteriaIdFromEntry = entry.getValue();
-            String claimID = entry.getKey();
-            if (criteriaID.equals(criteriaIdFromEntry) && claimID.equals(idClaim)) {
-                double amountFromRoc = getAmountFromRoc(claimID);
-                amountD += amountFromRoc;
-            }
-        }
-        DecimalFormat decimalFormat = new DecimalFormat();
-        decimalFormat.setMaximumFractionDigits(2);
-        amount = "$" + decimalFormat.format(amountD);
-        return amount;
     }
 
     /**
@@ -1540,26 +1408,26 @@ public class DataBaseHelper {
      * @param criteriaID
      * @return
      */
-    private String getCriteriaHits(String criteriaID) {
+    private String getCriteriaHits(String criteriaID, String initialDate, String finalDate) {
         String monthlyID = criteriaID;
-        Calendar calendar = Calendar.getInstance();
-        monthlyID += calendar.get(Calendar.MONTH) + 1;
-        monthlyID += calendar.get(Calendar.YEAR);
         String queryContent = "SELECT [roc_mensual_numero_hits]\n"
                 + "FROM [criterios_logicos].[dbo].[roc_mensual]\n"
-                + "WHERE [roc_mensual_ID] = '" + monthlyID + "'";
+                + "WHERE [roc_mensual_criterio_ID] = '" + monthlyID + "'\n"
+                + "AND [roc_mensual_fecha] BETWEEN '"
+                + initialDate + "' AND '" + finalDate + "'";
         ResultSet resultSet = resultSetFromQuery(queryContent);
         String hits = "0";
+        int hitAmount = 0;
         try {
             while (resultSet.next()) {
-                int hitAmount = resultSet.getInt("roc_mensual_numero_hits");
-                try {
-                    hits = Integer.toString(hitAmount);
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                }
+                hitAmount += resultSet.getInt("roc_mensual_numero_hits");
             }
         } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        try {
+            hits = Integer.toString(hitAmount);
+        } catch (Exception ex) {
             System.out.println(ex);
         }
         return hits;
@@ -2008,27 +1876,14 @@ public class DataBaseHelper {
         HashMap<String, String> claims = new HashMap();
 
         //Here we get the criterias by brand
-        LinkedHashMap<String, String> audiNewCriteria = getNewCriteriaByBrand("audi");
-        LinkedHashMap<String, String> seatNewCriteria = getNewCriteriaByBrand("seat");
-        LinkedHashMap<String, String> vwNewCriteria = getNewCriteriaByBrand("volkswagen");
-        LinkedHashMap<String, String> multiNewCriteria = getNewCriteriaByBrand("multimarca");
-        LinkedHashMap<String, String> nfzNewCriteria = getNewCriteriaByBrand("nfz");
-        LinkedHashMap<String, String> audiOldCriteria = getOldCriteriaByBrand("audi");
-        LinkedHashMap<String, String> seatOldCriteria = getOldCriteriaByBrand("seat");
-        LinkedHashMap<String, String> vwOldCriteria = getOldCriteriaByBrand("volkswagen");
-        LinkedHashMap<String, String> multiOldCriteria = getOldCriteriaByBrand("multimarca");
-        LinkedHashMap<String, String> nfzOldCriteria = getOldCriteriaByBrand("nfz");
+        LinkedHashMap<String, String> productoras = new LinkedHashMap();
+        LinkedHashMap<String, Integer> countersForProducs = new LinkedHashMap();
 
         //counters for each brand;
-        int audiCount = 0;
-        int seatCount = 0;
-        int vwCount = 0;
-        int multiCount = 0;
-        int nfzCount = 0;
 
         //This part will get the data warehouse claims
         queryContent = "SELECT [dwh_id], "
-                + "[dwh_marca]\n"
+                + "[dwh_productora], [dwh_marca]\n"//Esto se cambia por el nuevo campo de javi
                 + "FROM [criterios_logicos].[dbo].[dwh]\n"
                 + "WHERE [dwh_fecha_reclamacion] BETWEEN '"
                 + initalDate + "' AND '" + finalDate + "'";
@@ -2037,16 +1892,22 @@ public class DataBaseHelper {
             while (resultSet.next()) {
                 String id = resultSet.getString("dwh_id");
                 String marca = resultSet.getString("dwh_marca").toLowerCase();
+                marca = (marca.equals("audi"))
+                        ? "A" : (marca.equals("seat"))
+                        ? "S" : (marca.equals("nfz"))
+                        ? "N" : "V";
+                String fabricante = marca + resultSet.getString("dwh_productora").toUpperCase();//Esto también
                 if (!claims.containsKey(id)) {
                     claims.put(id, id);
-                    if (marca.equals("seat")) {
-                        seatCount++;
-                    } else if (marca.equals("audi")) {
-                        audiCount++;
-                    } else if (marca.equals("vw pkw")) {
-                        vwCount++;
-                    } else if (marca.equals("nfz")) {
-                        nfzCount++;
+                    if (!productoras.containsKey(fabricante)) {
+                        productoras.put(fabricante, fabricante);
+                        Integer integer = countersForProducs.get(fabricante);
+                        if (integer == null) {
+                            integer = new Integer(0);
+                        }
+                        countersForProducs.put(fabricante, integer + 1);
+                    } else {
+                        countersForProducs.put(fabricante, countersForProducs.get(fabricante) + 1);
                     }
                 }
             }
@@ -2056,37 +1917,26 @@ public class DataBaseHelper {
 
         //This part is for get the claims from roc
         queryContent = "SELECT [roc_ID],"
-                + "[roc_criterios]\n"
+                + "[roc_fabricante]\n"
                 + "FROM [criterios_logicos].[dbo].[roc]\n"
                 + "WHERE [roc_claim_date] BETWEEN '"
                 + initalDate + "' AND '" + finalDate + "'";
         resultSet = resultSetFromQuery(queryContent);
         try {
             while (resultSet.next()) {
-                String[] ids = resultSet.getString("roc_criterios").split("[*]+");
                 String id = resultSet.getString("roc_ID").trim();
+                String fabricante = resultSet.getString("roc_fabricante").toUpperCase();
                 if (!claims.containsKey(id)) {
                     claims.put(id, id);
-                    for (String id1 : ids) {
-                        if (audiNewCriteria.containsKey(id1) || audiOldCriteria.containsKey(id1)) {
-                            audiCount++;
-                            continue;
+                    if (!productoras.containsKey(fabricante)) {
+                        productoras.put(fabricante, fabricante);
+                        Integer integer = countersForProducs.get(fabricante);
+                        if (integer == null) {
+                            integer = new Integer(0);
                         }
-                        if (seatNewCriteria.containsKey(id1) || seatOldCriteria.containsKey(id1)) {
-                            seatCount++;
-                            continue;
-                        }
-                        if (vwNewCriteria.containsKey(id1) || vwOldCriteria.containsKey(id1)) {
-                            vwCount++;
-                            continue;
-                        }
-                        if (multiNewCriteria.containsKey(id1) || multiOldCriteria.containsKey(id1)) {
-                            multiCount++;
-                            continue;
-                        }
-                        if (nfzNewCriteria.containsKey(id1) || nfzOldCriteria.containsKey(id1)) {
-                            nfzCount++;
-                        }
+                        countersForProducs.put(fabricante, integer + 1);
+                    } else {
+                        countersForProducs.put(fabricante, countersForProducs.get(fabricante) + 1);
                     }
                 }
             }
@@ -2096,7 +1946,7 @@ public class DataBaseHelper {
 
         //This part will get the data from claim claims
         queryContent = "SELECT [claim_ID]\n"
-                + "      ,[claim_criterio_id]\n"
+                + "      ,[claim_produc], [claim_manufacturer]\n"
                 + "FROM [criterios_logicos].[dbo].[claim]\n"
                 + "WHERE [claim_claim_date] BETWEEN '"
                 + initalDate + "' AND '" + finalDate + "'";
@@ -2104,27 +1954,18 @@ public class DataBaseHelper {
         try {
             while (resultSet.next()) {
                 String id = resultSet.getString("claim_ID");
-                String criterioID = resultSet.getString("claim_criterio_id");
+                String fabricante = resultSet.getString("claim_manufacturer") + resultSet.getString("claim_produc");
                 if (!claims.containsKey(id)) {
                     claims.put(id, id);
-                    if (audiNewCriteria.containsKey(criterioID) || audiOldCriteria.containsKey(criterioID)) {
-                        audiCount++;
-                        continue;
-                    }
-                    if (seatNewCriteria.containsKey(criterioID) || seatOldCriteria.containsKey(criterioID)) {
-                        seatCount++;
-                        continue;
-                    }
-                    if (vwNewCriteria.containsKey(criterioID) || vwOldCriteria.containsKey(criterioID)) {
-                        vwCount++;
-                        continue;
-                    }
-                    if (multiNewCriteria.containsKey(criterioID) || multiOldCriteria.containsKey(criterioID)) {
-                        multiCount++;
-                        continue;
-                    }
-                    if (nfzNewCriteria.containsKey(criterioID) || nfzOldCriteria.containsKey(criterioID)) {
-                        nfzCount++;
+                    if (!productoras.containsKey(fabricante)) {
+                        productoras.put(fabricante, fabricante);
+                        Integer integer = countersForProducs.get(fabricante);
+                        if (integer == null) {
+                            integer = new Integer(0);
+                        }
+                        countersForProducs.put(fabricante, integer + 1);
+                    } else {
+                        countersForProducs.put(fabricante, countersForProducs.get(fabricante) + 1);
                     }
                 }
             }
@@ -2132,58 +1973,11 @@ public class DataBaseHelper {
             System.out.println(ex);
         }
 
-        results.add(new ResultSetForTotalClaims(Integer.toString(audiCount), "Audi"));
-        results.add(new ResultSetForTotalClaims(Integer.toString(seatCount), "Seat"));
-        results.add(new ResultSetForTotalClaims(Integer.toString(vwCount), "Volkswagen"));
-        results.add(new ResultSetForTotalClaims(Integer.toString(nfzCount), "NTFZ"));
-        results.add(new ResultSetForTotalClaims(Integer.toString(multiCount), "Multimarca"));
+        for (Map.Entry<String, Integer> entry : countersForProducs.entrySet()) {
+            results.add(new ResultSetForTotalClaims(Integer.toString(entry.getValue()), entry.getKey()));
+        }
+        Collections.sort(results);
         return results;
-    }
-
-    /**
-     * this method will get all the criteria (by it's new id) for a specific
-     * brand It's used int the getTotalClaimsByBrand method
-     *
-     * @param brand
-     * @return
-     */
-    private LinkedHashMap<String, String> getNewCriteriaByBrand(String brand) {
-        LinkedHashMap<String, String> criteria = new LinkedHashMap();
-        String queryContent = "SELECT [criterio_id_nuevo]\n"
-                + "FROM [criterios_logicos].[dbo].[criterio]\n"
-                + "WHERE [criterio_marca] = '" + brand + "'";
-        ResultSet resultSet = resultSetFromQuery(queryContent);
-        try {
-            while (resultSet.next()) {
-                criteria.put(resultSet.getString("criterio_id_nuevo"), brand);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-        return criteria;
-    }
-
-    /**
-     * this method will get all the criteria (by it's old id) for a specific
-     * brand It's used in the getTotalClaimsByBrand method
-     *
-     * @param brand
-     * @return
-     */
-    private LinkedHashMap<String, String> getOldCriteriaByBrand(String brand) {
-        LinkedHashMap<String, String> criteria = new LinkedHashMap();
-        String queryContent = "SELECT [criterio_id_viejo]\n"
-                + "FROM [criterios_logicos].[dbo].[criterio]\n"
-                + "WHERE [criterio_marca] = '" + brand + "'";
-        ResultSet resultSet = resultSetFromQuery(queryContent);
-        try {
-            while (resultSet.next()) {
-                criteria.put(resultSet.getString("criterio_id_viejo"), brand);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-        return criteria;
     }
 
     //STANDARD DATA-BASE OPS METHODS
@@ -2246,7 +2040,7 @@ public class DataBaseHelper {
         }
         return false;
     }
-    
+
     public boolean setBussinessApprovedCriteria(String id) {
         String queryContent = "use criterios_logicos\n"
                 + "update criterios_logicos.dbo.criterio\n"
@@ -2263,7 +2057,7 @@ public class DataBaseHelper {
                 + "where criterio_ID = '" + id + "'";
         return executeQuery(queryContent, false);
     }
-    
+
     public List<String> getNotAdminApprovedCriteria() {
         String queryContent = "USE criterios_logicos\n"
                 + "SELECT criterio_ID\n"
@@ -2298,14 +2092,13 @@ public class DataBaseHelper {
         }
         return criterios;
     }
-    
+
     public boolean deleteCriteriaByID(String id) {
         String queryContent = "use criterios_logicos\n"
                 + "delete from criterios_logicos.dbo.criterio\n"
                 + "where criterio_ID = '" + id + "'";
         return executeQuery(queryContent, false);
     }
-    
 
     /**
      * this method closes the connection to the data base

@@ -77,10 +77,10 @@ public class UploadEasyFileServlet extends HttpServlet {
         
         HttpSession session;
         String nextPage;
-        if(uploadService.uploadFile("easy")) {
+        if(uploadService.uploadFile("easy", "", "")) {
             nextPage = "home.jsp";
             session = request.getSession();
-            session.setAttribute("message", "El archivo se proceso correctamente.");
+            session.setAttribute("message", "El archivo se procesó correctamente.");
         } else {
             nextPage = "error.jsp";
             session = request.getSession();

@@ -8,7 +8,6 @@ import com.vw.model.RequiredData;
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,7 +44,7 @@ public class ExcelFileHandler {
      * @return true if the easy file was successfully procesed, false otherwise
      */
     public boolean processEasyFile() {
-        processData(xssfWorkbook, 1);
+        processData(xssfWorkbook, 1, "", "");
         return true;
     }
 
@@ -55,7 +54,7 @@ public class ExcelFileHandler {
      * otherwise
      */
     public boolean processDwhFile() {
-        processData(xssfWorkbook, 2);
+        processData(xssfWorkbook, 2, "", "");
         return true;
     }
 
@@ -64,7 +63,7 @@ public class ExcelFileHandler {
      * @return true if the roc file was successfully procesed, false otherwise
      */
     public boolean processRocFile() {
-        processData(xssfWorkbook, 3);
+        processData(xssfWorkbook, 3, "", "");
         return true;
     }
 
@@ -73,7 +72,7 @@ public class ExcelFileHandler {
      * @return true if the claim file was successfully procesed, false otherwise
      */
     public boolean processClaimFile() {
-        processData(xssfWorkbook, 4);
+        processData(xssfWorkbook, 4, "", "");
         return true;
     }
 
@@ -82,8 +81,8 @@ public class ExcelFileHandler {
      * @return true if the monthly roc file was successfully procesed, false
      * otherwise
      */
-    public boolean processMonthlyRocFile() {
-        processData(xssfWorkbook, 5);
+    public boolean processMonthlyRocFile(String month, String year) {
+        processData(xssfWorkbook, 5, month, year);
         return true;
     }
 
@@ -96,7 +95,7 @@ public class ExcelFileHandler {
      * @param table
      * @return true if the whole proccess was executed. false otherwise
      */
-    private boolean processData(XSSFWorkbook file, int table) {
+    private boolean processData(XSSFWorkbook file, int table, String month, String year) {
         //First we get the file and set the policy
         XSSFWorkbook workbook = file;
         workbook.setMissingCellPolicy(Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
@@ -190,7 +189,7 @@ public class ExcelFileHandler {
         for (int i = 1; i < rowsForSheet.size(); i++) {
             //we get the row
             List row = (List) rowsForSheet.get(i);
-            dataBaseHandler.executeQuery(generateRowQuery(row, rowNames, table), false);
+            dataBaseHandler.executeQuery(generateRowQuery(row, rowNames, table, month, year), false);
         }
         dataBaseHandler.closeConnection();
         return true;
@@ -205,17 +204,18 @@ public class ExcelFileHandler {
      * @param tableNumber
      * @return a string with the query
      */
-    public String generateRowQuery(List data, List rowNames, int tableNumber) {
+    public String generateRowQuery(List data, List rowNames, int tableNumber, String month, String year) {
         LinkedHashMap<String, String> table = getTable(tableNumber);
         LinkedHashMap<String, String> dataTypes = getTableTypes(tableNumber);
         LinkedHashMap<String, Integer> dataIndexes = getDataIndexes(rowNames, table);
-        return buildQuery(data, rowNames, table, dataTypes, dataIndexes, tableNumber);
+        return buildQuery(data, rowNames, table, dataTypes, dataIndexes, tableNumber, month, year);
     }
 
     private String buildQuery(List data, List rowNames,
             LinkedHashMap<String, String> table,
             LinkedHashMap<String, String> dataTypes,
-            LinkedHashMap<String, Integer> dataIndexes, int tableNumber) {
+            LinkedHashMap<String, Integer> dataIndexes, int tableNumber,
+            String month, String year) {
         StringBuilder query = new StringBuilder();
         LinkedHashMap<String, String> valuesForInsert = new LinkedHashMap();
         query.append("INSERT INTO [criterios_logicos].[dbo].");
@@ -236,7 +236,7 @@ public class ExcelFileHandler {
                 query.append("[roc_mensual] \n(");
                 break;
         }
-        query.append(buildInsert(table, data, valuesForInsert, dataIndexes, tableNumber, rowNames));
+        query.append(buildInsert(table, data, valuesForInsert, dataIndexes, tableNumber, rowNames, month, year));
         query.append(buildValues(valuesForInsert, dataTypes));
         return query.toString();
     }
@@ -244,7 +244,8 @@ public class ExcelFileHandler {
     private String buildInsert(LinkedHashMap<String, String> table,
             List data, LinkedHashMap<String, String> valuesForInsert,
             LinkedHashMap<String, Integer> dataIndexes,
-            int tableNumber, List rowNames) {
+            int tableNumber, List rowNames,
+            String month, String year) {
         StringBuilder query = new StringBuilder();
 
         for (Map.Entry<String, String> entry : table.entrySet()) {
@@ -289,7 +290,7 @@ public class ExcelFileHandler {
                         break;
                     case 5://rocM
                         if (processMonthlySpecialCases(data, key,
-                                query, valuesForInsert, dataIndexes)) {
+                                query, valuesForInsert, dataIndexes, month, year)) {
                             continue;
                         }
                         break;
@@ -558,19 +559,19 @@ public class ExcelFileHandler {
     private boolean processMonthlySpecialCases(List data,
             String key, StringBuilder query,
             LinkedHashMap<String, String> valuesForInsert,
-            LinkedHashMap<String, Integer> dataIndexes) {
+            LinkedHashMap<String, Integer> dataIndexes,
+            String month, String year) {
         if (key.equals("roc_mensual_ID")) {
             String rocMID;
             rocMID = (String) data.get(dataIndexes.get("identificador")) + "*";
-            Calendar calendar = Calendar.getInstance();
-            rocMID += calendar.get(Calendar.MONTH) + 1;
-            rocMID += calendar.get(Calendar.YEAR);
+            rocMID += month;
+            rocMID += year;
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, rocMID);
             return true;
         }
         if(key.equals("roc_mensual_fecha")) {
-            String date = "20170101";
+            String date = year + month + "01";
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, date);
             return true;
@@ -725,7 +726,7 @@ public class ExcelFileHandler {
         if (flag) {
             String[] vals = div[0].split("[-]+");
             day = (vals[0].length() == 1) ? "0" + vals[0] : vals[0];
-            month = months.get(vals[1]);
+            month = months.get(vals[1].toUpperCase());
             year = (vals[2].length() == 1) ? "20" + vals[2] : vals[2];
         } else {
             String[] vals = div[0].split("[/]+");
