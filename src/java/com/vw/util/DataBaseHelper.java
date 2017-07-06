@@ -2,6 +2,7 @@ package com.vw.util;
 
 import com.vw.model.Criteria;
 import com.vw.model.DetailedResultSet;
+import com.vw.model.MissingCriteria;
 import com.vw.model.ResultSetForTotalClaims;
 import com.vw.model.Usuario;
 import java.sql.Connection;
@@ -514,6 +515,87 @@ public class DataBaseHelper {
                 + "   SET [criterio_estatus] = 'inactivo'\n"
                 + " WHERE [criterio_ID] = '" + id + "'";
         return executeQuery(queryContent, false);
+    }
+
+    public List<MissingCriteria> getCriteriaDifferencess(String month, String year) {
+        List<MissingCriteria> list = new ArrayList();
+
+        HashMap<String, String> activeCriteriaFromCriteriaData = getActiveCriteriaFromDataBase();
+        HashMap<String, String> activeCriteriaFromMonthlyRoc = getActiveCriteriaFromMonthlyRoc(month, year);
+
+        for (Map.Entry<String, String> entry : activeCriteriaFromCriteriaData.entrySet()) {
+            String newID = entry.getKey();
+            String oldID = entry.getValue();
+            if (!activeCriteriaFromMonthlyRoc.containsKey(newID)
+                    && activeCriteriaFromMonthlyRoc.containsKey(oldID)) {
+                String criteriaID = newID + "*" + oldID;
+                String criteriaMessage = "El criterio " + criteriaID
+                        + " se encuentra activo en la base de datos y no hay "
+                        + "coincidencia en el archivo ROC Mensual.";
+                list.add(new MissingCriteria(criteriaID, criteriaMessage));
+            }
+        }
+
+        for (Map.Entry<String, String> entry : activeCriteriaFromMonthlyRoc.entrySet()) {
+            String criteriaID = entry.getKey();
+            if (!activeCriteriaFromCriteriaData.containsKey(criteriaID)
+                    && !activeCriteriaFromCriteriaData.containsValue(criteriaID)) {
+                String criteriaMessage = "El criterio " + criteriaID
+                        + " se encuentra activo en el ROC Mensual y no hay "
+                        + "coincidencia en la base de datos de criterios lógicos.";
+                list.add(new MissingCriteria(criteriaID, criteriaMessage));
+            }
+        }
+        
+        Collections.sort(list);
+
+        return list;
+    }
+
+    public HashMap<String, String> getActiveCriteriaFromMonthlyRoc(String month, String year) {
+        HashMap<String, String> map = new HashMap();
+        String queryContent = "USE criterios_logicos\n"
+                + "SELECT roc_mensual_criterio_ID\n"
+                + "FROM criterios_logicos.dbo.roc_mensual\n"
+                + "WHERE roc_mensual_fecha = '" + year + month + "01'";
+        ResultSet resultSet = resultSetFromQuery(queryContent);
+        try {
+            while (resultSet.next()) {
+                String id = resultSet.getString("roc_mensual_criterio_ID");
+                map.put(id, id);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return map;
+    }
+
+    public HashMap<String, String> getActiveCriteriaFromDataBase() {
+        HashMap<String, String> map = new HashMap();
+        String queryContent = "USE criterios_logicos\n"
+                + "SELECT criterio_ID\n"
+                + "FROM criterios_logicos.dbo.criterio\n"
+                + "where criterio_estatus = 'activo'\n"
+                + "and criterio_aprobado_negocio = 's'\n"
+                + "and criterio_aprobado_admin = 's'";
+        ResultSet resultSet = resultSetFromQuery(queryContent);
+        try {
+            while (resultSet.next()) {
+                String bothID = resultSet.getString("criterio_ID");
+                String[] ids = bothID.split("[*]");
+                String newID = ids[0];
+                String oldID;
+                try {
+                    oldID = ids[1];
+                } catch (Exception e) {
+                    oldID = "";
+                }
+                map.put(newID, oldID);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return map;
     }
 
     //REPORTING METHODS

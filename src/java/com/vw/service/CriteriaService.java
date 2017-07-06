@@ -5,7 +5,9 @@
 package com.vw.service;
 
 import com.vw.model.Criteria;
+import com.vw.model.MissingCriteria;
 import com.vw.util.DataBaseHelper;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -181,6 +183,11 @@ public class CriteriaService {
         return criterios;
     }
     
+    /**
+     * 
+     * @param id
+     * @return 
+     */
     public boolean setBussinessApprovedCriteria (String id) {
         DataBaseHelper dataBaseHelper = new DataBaseHelper();
         dataBaseHelper.getConnection();
@@ -193,6 +200,11 @@ public class CriteriaService {
         }
     }
     
+    /**
+     * 
+     * @param id
+     * @return 
+     */
     public boolean setAdminApprovedCriteria (String id) {
         DataBaseHelper dataBaseHelper = new DataBaseHelper();
         dataBaseHelper.getConnection();
@@ -205,6 +217,11 @@ public class CriteriaService {
         }
     }
     
+    /**
+     * 
+     * @param id
+     * @return 
+     */
     public boolean deleteCriteriaByID (String id) {
         DataBaseHelper dataBaseHelper = new DataBaseHelper();
         dataBaseHelper.getConnection();
@@ -231,6 +248,21 @@ public class CriteriaService {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @param month
+     * @param year
+     * @return 
+     */
+    public List<MissingCriteria> getCriteriaDifference (String month, String year) {
+        List<MissingCriteria> list = new ArrayList<MissingCriteria>();
+        DataBaseHelper dataBaseHelper = new DataBaseHelper();
+        dataBaseHelper.getConnection();
+        list = dataBaseHelper.getCriteriaDifferencess(month, year);
+        dataBaseHelper.closeConnection();
+        return list;
     }
     
 }

@@ -4,11 +4,14 @@
  */
 package com.vw.servlet.upload;
 
+import com.vw.model.MissingCriteria;
+import com.vw.service.CriteriaService;
 import com.vw.service.UploadService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -77,9 +80,16 @@ public class UploadMonthlyRocFileServlet extends HttpServlet {
         String year = request.getParameter("anio");
 
         if (uploadService.uploadFile("roc_mensual", month, year)) {
-            nextPage = "home.jsp";
-            session = request.getSession();
-            session.setAttribute("message", "El archivo se procesó correctamente.");
+            List<MissingCriteria> criterios = new CriteriaService().getCriteriaDifference(month, year);
+            if (criterios.isEmpty()) {
+                nextPage = "home.jsp";
+                session = request.getSession();
+                session.setAttribute("message", "El archivo se procesó correctamente.");
+            } else {
+                nextPage = "criteria/missingCriteria.jsp";
+                session = request.getSession();
+                session.setAttribute("result", criterios);
+            }
         } else {
             nextPage = "error.jsp";
             session = request.getSession();
