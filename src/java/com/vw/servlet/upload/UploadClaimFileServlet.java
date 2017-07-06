@@ -5,7 +5,6 @@
 package com.vw.servlet.upload;
 
 import com.vw.service.UploadService;
-import com.vw.util.ExcelConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -48,28 +46,16 @@ public class UploadClaimFileServlet extends HttpServlet {
 
         String fullFile = null;
         String fileName = null;
-        String fileExtension = null;
+
         for (Part part : request.getParts()) {
             fileName = extractFileName(part);
-            fileExtension = fileName.split("[.]+")[1];
             fileName = new File(fileName).getName();
             fullFile = savePath + File.separator + fileName;
             part.write(fullFile);
         }
 
         XSSFWorkbook xssfw = null;
-//        if (fileExtension.toLowerCase().equals("xls")) {
-//            try {
-//                //            xssfw = ExcelConverter.convertHSSFWorkbookToXSSFWorkbook(
-//                //                    new HSSFWorkbook(new FileInputStream(fullFile)));
-//                xssfw = new ExcelConverter(
-//                        new HSSFWorkbook(new FileInputStream(fullFile))).call();
-//            } catch (Exception ex) {
-//                System.out.println(ex);
-//            }
-//        } else if (fileExtension.toLowerCase().equals("xlsx")) {
-            xssfw = new XSSFWorkbook(new FileInputStream(fullFile));
-//        }
+        xssfw = new XSSFWorkbook(new FileInputStream(fullFile));
 
         UploadService uploadService = new UploadService(xssfw);
 

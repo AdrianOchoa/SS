@@ -5,7 +5,6 @@
 package com.vw.servlet.upload;
 
 import com.vw.service.UploadService;
-import com.vw.util.ExcelConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -50,39 +48,25 @@ public class UploadMonthlyRocFileServlet extends HttpServlet {
 
         String fullFile = null;
         String fileName = null;
-        String fileExtension = "";
 
         for (Part part : request.getParts()) {
             fileName = extractFileName(part);
-            if(fileName == null) {
+            if (fileName == null) {
                 break;
             }
-            if(fileName != null) {
-                if(fileName.isEmpty()) {
+            if (fileName != null) {
+                if (fileName.isEmpty()) {
                     break;
                 }
             }
-            System.out.println("File name: " + fileName);
-            fileExtension = fileName.split("[.]+")[1];
             fullFile = savePath + File.separator + fileName;
-            System.out.println("Antes de part.write: " + fullFile);
             part.write(fullFile);
-            System.out.println("Despues de part.write: " + fullFile);
         }
 
 
         XSSFWorkbook xssfw = null;
 
-        if (fileExtension.toLowerCase().equals("xls")) {
-            try {
-                xssfw = new ExcelConverter(
-                        new HSSFWorkbook(new FileInputStream(fullFile))).call();
-            } catch (Exception ex) {
-                System.out.println("Excepción en fileExtension.toLowerCase(): " + ex);
-            }
-        } else if (fileExtension.toLowerCase().equals("xlsx")) {
-            xssfw = new XSSFWorkbook(new FileInputStream(fullFile));
-        }
+        xssfw = new XSSFWorkbook(new FileInputStream(fullFile));
 
         UploadService uploadService = new UploadService(xssfw);
 
