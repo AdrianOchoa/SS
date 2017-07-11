@@ -19,9 +19,10 @@ public class DetailedResultSet implements Comparable<DetailedResultSet> {
     private String criteriaID;
     private String claimSerial;
     private String dealer;
+    private String file;
 
     public DetailedResultSet(String id, String monto, String solicitante,
-            String chasis, String criteriaID, String claimSerial, String dealer) {
+            String chasis, String criteriaID, String claimSerial, String dealer, String file) {
         this.id = id;
         this.monto = monto;
         this.solicitante = solicitante;
@@ -29,6 +30,7 @@ public class DetailedResultSet implements Comparable<DetailedResultSet> {
         this.criteriaID = criteriaID;
         this.claimSerial = claimSerial;
         this.dealer = dealer;
+        this.file = file;
     }
 
     public DetailedResultSet() {
@@ -134,10 +136,24 @@ public class DetailedResultSet implements Comparable<DetailedResultSet> {
 
     @Override
     public int compareTo(DetailedResultSet o) {
-        if (Double.parseDouble(o.monto.replace("$", "").replace(",", "")) == Double.parseDouble(this.monto.replace("$", "").replace(",", ""))) {
-            return this.id.compareTo(o.id);
+        if (Double.parseDouble(o.getMonto().replace("$", "").replace(",", "")) == Double.parseDouble(this.getMonto().replace("$", "").replace(",", ""))) {
+            return this.getId().compareTo(o.getId());
         } else {
-            return (int) (Double.parseDouble(o.monto.replace("$", "").replace(",", "")) - Double.parseDouble(this.monto.replace("$", "").replace(",", "")));
+            return (int) (Double.parseDouble(o.getMonto().replace("$", "").replace(",", "")) - Double.parseDouble(this.getMonto().replace("$", "").replace(",", "")));
         }
+    }
+
+    /**
+     * @return the file
+     */
+    public String getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(String file) {
+        this.file = file;
     }
 }

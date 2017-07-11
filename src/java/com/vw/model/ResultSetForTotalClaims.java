@@ -53,6 +53,8 @@ public class ResultSetForTotalClaims implements Comparable<ResultSetForTotalClai
 
     @Override
     public int compareTo(ResultSetForTotalClaims o) {
-        return this.totalClaims.compareTo(o.totalClaims);
+        int i = Integer.parseInt(o.totalClaims);
+        int n = Integer.parseInt(this.totalClaims);
+        return i - n;
     }
 }

@@ -607,15 +607,15 @@ public class DataBaseHelper {
         } else if (reportType.equals("ajusteCriterio")) {
             result = getDetailedReportFromCriteriaAdjust(criteriaID, initialDate, finalDate, solicitante);
         } else if (reportType.equals("canceladosAnalista")) {
-            result = getDetailedReportFromAnalistCanceled(criteriaID, initialDate, finalDate, solicitante);
+            result = getDetailedReportFromAnalistCanceled(criteriaID, initialDate, finalDate, solicitante, "ROC");
         } else if (reportType.equals("canceladosCriterio")) {
-            result = getDetailedReportFromCriteriaCanceled(criteriaID, initialDate, finalDate, solicitante);
+            result = getDetailedReportFromCriteriaCanceled(criteriaID, initialDate, finalDate, solicitante, "Claim Criteria");
         }
         return result;
     }
 
     private List<DetailedResultSet> getDetailedReportFromAnalistCanceled(String criteriaID,
-            String initialDate, String finalDate, String solicitante) {
+            String initialDate, String finalDate, String solicitante, String file) {
         List<DetailedResultSet> result = new ArrayList();
 
         //Here is a list with all the intelligent criteria
@@ -668,7 +668,7 @@ public class DataBaseHelper {
     }
 
     private List<DetailedResultSet> getDetailedReportFromCriteriaCanceled(String criteriaID,
-            String initialDate, String finalDate, String solicitante) {
+            String initialDate, String finalDate, String solicitante, String file) {
         //Here is gonna be the final result
         List<DetailedResultSet> result = new ArrayList();
 
@@ -715,7 +715,7 @@ public class DataBaseHelper {
             idCriteria = entry.getValue();
             if (idCriteria.equals(criteriaID)) {
                 DetailedResultSet resultSet = getDetailedResultSetFromClaimCriteria(
-                        claimCriteriaClaimID, solicitante, criteriaID, "roc");
+                        claimCriteriaClaimID, solicitante, criteriaID, file);
                 result.add(resultSet);
             }
         }
@@ -732,17 +732,17 @@ public class DataBaseHelper {
         String chasis = getClaimChasis(idClaim);
         String claimSerial = getClaimSerial(idClaim);
         String dealer = getClaimDealer(idClaim);
-        return new DetailedResultSet(id, monto, solicitante, chasis, criteriaID, claimSerial, dealer);
+        return new DetailedResultSet(id, monto, solicitante, chasis, criteriaID, claimSerial, dealer, "DWH");
     }
 
     private DetailedResultSet getDetailedResultSetFromClaimCriteria(String idClaim,
             String solicitante, String criteriaID, String table) {
         String id = idClaim;
-        String monto = (table.equals("roc")) ? getClaimAmountFromRoc(idClaim) : getClaimAmountFromDWH(idClaim);
+        String monto = (table.equals("ROC")) ? getClaimAmountFromRoc(idClaim) : getClaimAmountFromDWH(idClaim);
         String chasis = getClaimChasis(idClaim);
         String claimSerial = getClaimSerial(idClaim);
         String dealer = getClaimDealer(idClaim);
-        return new DetailedResultSet(id, monto, solicitante, chasis, criteriaID, claimSerial, dealer);
+        return new DetailedResultSet(id, monto, solicitante, chasis, criteriaID, claimSerial, dealer, table);
     }
 
     private DetailedResultSet getDetailedResultSetFromRoc(String idClaim,
@@ -753,7 +753,7 @@ public class DataBaseHelper {
         String chasis = getChasisFromRoc(idClaim);
         String serial = getSerialFromRoc(idClaim);
         String dealer = getDealerFromRoc(idClaim);
-        return new DetailedResultSet(idClaim, monto, solicitante, chasis, criteriaID, serial, dealer);
+        return new DetailedResultSet(idClaim, monto, solicitante, chasis, criteriaID, serial, dealer, "ROC");
     }
 
     /**
@@ -1208,14 +1208,14 @@ public class DataBaseHelper {
             if (rocClaims.containsKey(claimIDFromFilteredClaims)) {
                 if (criteriaID.equals(criteriaIDFromFilteredClaims)) {
                     DetailedResultSet resultSet = getDetailedResultSetFromClaimCriteria(claimIDFromFilteredClaims,
-                            solicitante, criteriaIDFromFilteredClaims, "roc");
+                            solicitante, criteriaIDFromFilteredClaims, "ROC");
                     result.add(resultSet);
                 }
 
             } else if (dwhClaims.containsKey(claimIDFromFilteredClaims)) {
                 if (criteriaID.equals(criteriaIDFromFilteredClaims)) {
                     DetailedResultSet resultSet = getDetailedResultSetFromClaimCriteria(claimIDFromFilteredClaims,
-                            solicitante, criteriaIDFromFilteredClaims, "dwh");
+                            solicitante, criteriaIDFromFilteredClaims, "DWH");
                     result.add(resultSet);
                 }
             }
@@ -1956,7 +1956,9 @@ public class DataBaseHelper {
         LinkedHashMap<String, String> criteria = new LinkedHashMap();
         String queryContent = "SELECT [criterio_id_nuevo], [criterio_id_viejo]\n"
                 + "FROM [criterios_logicos].[dbo].[criterio]\n"
-                + "WHERE [criterio_tipo] != 'inteligente'";
+                + "WHERE [criterio_tipo] != 'inteligente' "
+                + "AND [criterio_nivel] = 'aviso al importador' "
+                + "OR [criterio_nivel] = 'nota al importador'";
         ResultSet resultSet = resultSetFromQuery(queryContent);
         try {
             while (resultSet.next()) {

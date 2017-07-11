@@ -144,7 +144,7 @@ public class ExcelFileHandler {
                 //we get the last active row from a sheet
                 int lastRow = getLastRow(workbook, sheet);
                 //we get the last active cell from a row
-                lastCell = (flag) ? ((XSSFRow) sheet.getRow(2)).getLastCellNum() 
+                lastCell = (flag) ? ((XSSFRow) sheet.getRow(2)).getLastCellNum()
                         : ((XSSFRow) sheet.getRow(1)).getLastCellNum();
                 /*In this for we have two if's.
                  if flag is true, that means we're reading the data warehouse file.
@@ -183,7 +183,7 @@ public class ExcelFileHandler {
 
         //Ths first row of our list are the names of the columns read from the file
         List rowNames = (List) rowsForSheet.get(0);
-        
+
         DataBaseHelper dataBaseHandler = new DataBaseHelper();
         dataBaseHandler.getConnection();
         for (int i = 1; i < rowsForSheet.size(); i++) {
@@ -307,7 +307,7 @@ public class ExcelFileHandler {
                 query.append("[").append(key).append("], ");
                 valuesForInsert.put(key, valueInData);
             } catch (Exception ex) {
-                System.out.println("Error en e build insert" + ex);
+                System.out.println("Error en el build insert" + ex);
             }
         }
         query = new StringBuilder(query.substring(0, query.length() - 2));
@@ -327,12 +327,19 @@ public class ExcelFileHandler {
                         value.replaceAll("\n", ",").replaceAll("'", "")).trim()).append("', ");
             } else if (dataTye.equals("double")) {
                 double valD = 0.0;
+                System.out.println("Valor sin replace " + value);
                 try {
                     valD = Double.parseDouble(value);
                 } catch (NumberFormatException ex) {
-                    valD = 0.0;
+                    value = value.replace(",", ".");
+                    System.out.println("Valor con replace " + value);
+                    try {
+                        valD = Double.parseDouble(value);
+                    } catch (NumberFormatException e) {
+                        valD = 0.0;
+                    }
                 } catch (NullPointerException ex) {
-                    valD = 3.3;
+                    System.out.println(ex);
                 }
                 query.append(valD).append(", ");
             } else if (dataTye.equals("date")) {
@@ -421,63 +428,63 @@ public class ExcelFileHandler {
             valuesForInsert.put(key, easyID);
             return true;
         }
-        if(key.equals("dwh_fecha_reclamacion")) {
-            String date = 
+        if (key.equals("dwh_fecha_reclamacion")) {
+            String date =
                     getDateFromDataWarehouse((String) data.get(dataIndexes.get(value)));
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, date);
             return true;
         }
-        if(key.equals("dwh_fecha_pago")) {
-            String date = 
+        if (key.equals("dwh_fecha_pago")) {
+            String date =
                     getDateFromDataWarehouse((String) data.get(dataIndexes.get(value)));
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, date);
             return true;
         }
-        if(key.equals("dwh_mo_int")) {
-            double doubleValue = 
+        if (key.equals("dwh_mo_int")) {
+            double doubleValue =
                     getDoubleFromDataWarehouse((String) data.get(dataIndexes.get(value)));
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, Double.toString(doubleValue));
             return true;
         }
-        if(key.equals("dwh_mat_int_sin_profit")) {
-            double doubleValue = 
+        if (key.equals("dwh_mat_int_sin_profit")) {
+            double doubleValue =
                     getDoubleFromDataWarehouse((String) data.get(dataIndexes.get(value)));
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, Double.toString(doubleValue));
             return true;
         }
-        if(key.equals("dwh_mo_ext")) {
-            double doubleValue = 
+        if (key.equals("dwh_mo_ext")) {
+            double doubleValue =
                     getDoubleFromDataWarehouse((String) data.get(dataIndexes.get(value)));
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, Double.toString(doubleValue));
             return true;
         }
-        if(key.equals("dwh_mat_ext_sin_profit")) {
-            double doubleValue = 
+        if (key.equals("dwh_mat_ext_sin_profit")) {
+            double doubleValue =
                     getDoubleFromDataWarehouse((String) data.get(dataIndexes.get(value)));
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, Double.toString(doubleValue));
             return true;
         }
-        if(key.equals("dwh_total_sin_profit")) {
-            double doubleValue = 
+        if (key.equals("dwh_total_sin_profit")) {
+            double doubleValue =
                     getDoubleFromDataWarehouse((String) data.get(dataIndexes.get(value)));
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, Double.toString(doubleValue));
             return true;
         }
-        if(key.equals("dwh_total_pagado")) {
-            double doubleValue = 
+        if (key.equals("dwh_total_pagado")) {
+            double doubleValue =
                     getDoubleFromDataWarehouse((String) data.get(dataIndexes.get(value)));
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, Double.toString(doubleValue));
             return true;
         }
-        if(key.equals("dwh_productora")) {
+        if (key.equals("dwh_productora")) {
             String marca = ((String) data.get(dataIndexes.get("marca"))).toLowerCase();
             marca = (marca.equals("audi")) ? "A" : (marca.equals("seat")) ? "S" : (marca.equals("nfz")) ? "N" : "V";
             String rest = (String) data.get(dataIndexes.get(value));
@@ -551,7 +558,7 @@ public class ExcelFileHandler {
             valuesForInsert.put(key, claimID);
             return true;
         }
-        if(key.equals("claim_produc")) {
+        if (key.equals("claim_produc")) {
             String manufacturer = (String) data.get(dataIndexes.get("manufacturer"));
             String rest = (String) data.get(dataIndexes.get(value));
             rest = (rest.length() == 3) ? "0" + rest : rest;
@@ -589,7 +596,7 @@ public class ExcelFileHandler {
             valuesForInsert.put(key, rocMID);
             return true;
         }
-        if(key.equals("roc_mensual_fecha")) {
+        if (key.equals("roc_mensual_fecha")) {
             String date = year + month + "01";
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, date);
@@ -773,16 +780,17 @@ public class ExcelFileHandler {
         months.put("DEC", "12");
         return months;
     }
-    
-    private double getDoubleFromDataWarehouse (String value) {
+
+    private double getDoubleFromDataWarehouse(String value) {
         value = value.replaceAll(",", "");
-        if(value.contains("$")) {
+        if (value.contains("$")) {
             value = value.replace("$", "");
         }
         return Double.parseDouble(value.trim());
     }
-    private String getDateFromDataWarehouse (String value) {
-        String [] vals = value.split("[/]+");
+
+    private String getDateFromDataWarehouse(String value) {
+        String[] vals = value.split("[/]+");
         String day = (vals[0].length() == 1) ? "0" + vals[0] : vals[0];
         String month = (vals[1].length() == 1) ? "0" + vals[1] : vals[1];
         String year = (vals[2].length() == 2) ? "20" + vals[2] : vals[2];
@@ -839,5 +847,4 @@ public class ExcelFileHandler {
         }
         return cellValue;
     }
-    
 }

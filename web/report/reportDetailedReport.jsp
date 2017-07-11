@@ -61,6 +61,7 @@
                                     <th class="text-center text-nowrap">CHASIS</th>
                                     <th class="text-center text-nowrap">CRITERIO</th>
                                     <th class="text-center text-nowrap">SERIAL</th>
+                                    <th class="text-center text-nowrap">TABLA</th>
                                     <th class="text-center text-nowrap">DEALER</th>
                                 </tr>
                             </thead>
@@ -73,6 +74,7 @@
                                         <td class="text-center text-nowrap">${element.chasis}</td>
                                         <td class="text-center text-nowrap">${element.criteriaID}</td>
                                         <td class="text-center text-nowrap">${element.claimSerial}</td>
+                                        <td class="text-center text-nowrap">${element.file}</td>
                                         <td class="text-center text-nowrap">${element.dealer}</td>
                                     </tr>
                                 </c:forEach>
@@ -82,7 +84,7 @@
                 </div>
                 <div class="row">
                     <a id="dLink" style="display: none"></a>
-                    <a class="btn btn-success" onclick="tableToExcel('tableData', 'Resultados', 'ajuste_analista.xls');">Exportar</a>
+                    <a class="btn btn-success" onclick="tableToExcel('tableData', 'Resultados', 'report.xls');">Exportar</a>
                 </div>
             </c:if>
         </div>¨
