@@ -54,6 +54,7 @@ public class CriteriaAddServlet extends HttpServlet {
         String fechaRevision = new SimpleDateFormat("yyyyMMdd HH:mm:ss").format(new Date());
         int periodo = 365;
         String agregadoPor = request.getParameter("agregado_por").trim();
+        String level = request.getParameter("lev").toLowerCase().trim();
         
         //creating the service
         CriteriaService criteriaService = new CriteriaService();
@@ -61,7 +62,10 @@ public class CriteriaAddServlet extends HttpServlet {
         //If the service was successfully created, the user will be redirected to the home page with a success message.
         //Otherwise, it will be redirected to an error page.
         HttpSession session;
-        if(criteriaService.addCriteria(idGenerado, idNuevo, idViejo, estatus, departamento, tipo, nivel, objetivo, grupo, contenido, comentario, datos, averia, danio, marca, claveComercial, modelo, tiposGarantia, solicitante, fechaCreacion, fechaRevision, periodo, agregadoPor)) {
+        if(criteriaService.addCriteria(idGenerado, idNuevo, idViejo, estatus, 
+                departamento, tipo, nivel, objetivo, grupo, contenido, comentario, 
+                datos, averia, danio, marca, claveComercial, modelo, tiposGarantia, 
+                solicitante, fechaCreacion, fechaRevision, periodo, agregadoPor, level)) {
             session = request.getSession();
             session.setAttribute("message", "El criterio se solicitó correctamente.");
             nextPage = "home.jsp";

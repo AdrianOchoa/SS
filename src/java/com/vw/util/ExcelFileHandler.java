@@ -477,6 +477,16 @@ public class ExcelFileHandler {
             valuesForInsert.put(key, Double.toString(doubleValue));
             return true;
         }
+        if(key.equals("dwh_productora")) {
+            String marca = ((String) data.get(dataIndexes.get("marca"))).toLowerCase();
+            marca = (marca.equals("audi")) ? "A" : (marca.equals("seat")) ? "S" : (marca.equals("nfz")) ? "N" : "V";
+            String rest = (String) data.get(dataIndexes.get(value));
+            rest = (rest.length() == 3) ? "0" + rest : rest;
+            marca += rest;
+            query.append("[").append(key).append("], ");
+            valuesForInsert.put(key, marca);
+            return true;
+        }
         return false;
     }
 
@@ -539,6 +549,15 @@ public class ExcelFileHandler {
                     "claim_no", "serial_no", "dealer");
             query.append("[").append(key).append("], ");
             valuesForInsert.put(key, claimID);
+            return true;
+        }
+        if(key.equals("claim_produc")) {
+            String manufacturer = (String) data.get(dataIndexes.get("manufacturer"));
+            String rest = (String) data.get(dataIndexes.get(value));
+            rest = (rest.length() == 3) ? "0" + rest : rest;
+            String produc = manufacturer + rest;
+            query.append("[").append(key).append("], ");
+            valuesForInsert.put(key, produc);
             return true;
         }
         if (key.equals("claim_claim_date")) {

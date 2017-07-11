@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Error</title>
         <link rel="stylesheet" href="css/bootstrap.min.cdn.css" type="text/css">
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">-->
         <link rel="stylesheet" href="css/font-awesome.min.cdn.css" type="text/css">
         <link rel="stylesheet" href="css/error.css" type="text/css">
         <script src="js/jquery.min.js" type="text/javascript"></script>

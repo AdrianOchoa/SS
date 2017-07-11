@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <div class="col-md-4 selectContainer">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             <select name="mes" class="form-control selectpicker" required>
                                 <option value="" >Seleccione el mes</option>
                                 <option>Enero</option>
@@ -75,7 +75,7 @@
                     <div class="form-group">
                         <div class="col-md-4 selectContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 <select name="anio" class="form-control selectpicker" required>
                                     <option value="" >Seleccione el año</option>
                                     <option>2016</option>
@@ -93,7 +93,7 @@
                 <div class="form-group">
                     <div class="col-md-4 selectContainer">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             <select name="mesFin" class="form-control selectpicker" required>
                                 <option value="" >Seleccione el mes</option>
                                 <option>Enero</option>
@@ -114,7 +114,7 @@
                     <div class="form-group">
                         <div class="col-md-4 selectContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 <select name="anioFin" class="form-control selectpicker" required>
                                     <option value="" >Seleccione el año</option>
                                     <option>2016</option>
@@ -163,7 +163,7 @@
                 </div>
                 <div class="row">
                     <a id="dLink" style="display: none"></a>
-                    <a class="btn btn-success" onclick="tableToExcel('tableData', 'Criterios', 'lista_criterios');">Exportar</a>
+                    <a class="btn btn-success" onclick="tableToExcel('tableData', 'Criterios', 'lista_criterios.xls');">Exportar</a>
                 </div>
             </c:if>
         </div>

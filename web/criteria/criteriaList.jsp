@@ -50,6 +50,7 @@
                         <h3 class="panel-title">Criterios</h3>
                     </div>
                     <div class="container-fluid">
+                        <div class="table-responsive">
                         <table class="table table-responsive table-bordered table-sm table-hover" id="tableData">
                             <thead>
                                 <tr>
@@ -110,6 +111,7 @@
                             </tbody>
                         </table>
                     </div>
+                           </div>
                 </div>
             </div>
             <div class="row">

@@ -2,16 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.vw.model;
 
 /**
- * This class is a data container that will be filled with the data for the specific claims affected by
- * a criteria.
+ * This class is a data container that will be filled with the data for the
+ * specific claims affected by a criteria.
+ *
  * @author Adrián Ochoa Martínez
  */
 public class DetailedResultSet implements Comparable<DetailedResultSet> {
-    
+
     private String id;
     private String monto;
     private String solicitante;
@@ -19,8 +19,8 @@ public class DetailedResultSet implements Comparable<DetailedResultSet> {
     private String criteriaID;
     private String claimSerial;
     private String dealer;
-    
-    public DetailedResultSet (String id, String monto, String solicitante,
+
+    public DetailedResultSet(String id, String monto, String solicitante,
             String chasis, String criteriaID, String claimSerial, String dealer) {
         this.id = id;
         this.monto = monto;
@@ -30,9 +30,8 @@ public class DetailedResultSet implements Comparable<DetailedResultSet> {
         this.claimSerial = claimSerial;
         this.dealer = dealer;
     }
-    
-    public DetailedResultSet () {
-        
+
+    public DetailedResultSet() {
     }
 
     /**
@@ -135,7 +134,10 @@ public class DetailedResultSet implements Comparable<DetailedResultSet> {
 
     @Override
     public int compareTo(DetailedResultSet o) {
-        return this.id.compareTo(o.id);
+        if (Double.parseDouble(o.monto.replace("$", "").replace(",", "")) == Double.parseDouble(this.monto.replace("$", "").replace(",", ""))) {
+            return this.id.compareTo(o.id);
+        } else {
+            return (int) (Double.parseDouble(o.monto.replace("$", "").replace(",", "")) - Double.parseDouble(this.monto.replace("$", "").replace(",", "")));
+        }
     }
-
 }

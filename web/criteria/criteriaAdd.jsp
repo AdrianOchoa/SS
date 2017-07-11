@@ -242,6 +242,21 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Select basic for level-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Nivel</label>
+                        <div class="col-md-4 selectContainer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <select name="lev" class="form-control selectpicker" >
+                                    <option value=" " >Seleccione el nivel del criterio</option>
+                                    <option>Importador</option>
+                                    <option>Fabricante</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Text area for tipo auto - daño comercial-->
                     <div class="form-group">

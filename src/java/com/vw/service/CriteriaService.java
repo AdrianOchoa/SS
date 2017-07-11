@@ -50,10 +50,13 @@ public class CriteriaService {
             String estatus, String departamento, String tipo, String nivel, String objetivo,
             String grupo, String contenido, String comentario, String datos, String averia,
             String danio, String marca, String claveComercial, String modelo, String tiposGarantia,
-            String solicitante, String fechaCreacion, String fechaRevision, int periodo, String agregadoPor) {
+            String solicitante, String fechaCreacion, String fechaRevision, int periodo, String agregadoPor, String level) {
         DataBaseHelper dataBaseHelper = new DataBaseHelper();
         dataBaseHelper.getConnection();
-        if (dataBaseHelper.addCriteria(idGenerado, idNuevo, idViejo, estatus, departamento, tipo, nivel, objetivo, grupo, contenido, comentario, datos, averia, danio, marca, claveComercial, modelo, tiposGarantia, solicitante, fechaCreacion, fechaRevision, periodo, agregadoPor)) {
+        if (dataBaseHelper.addCriteria(idGenerado, idNuevo, idViejo, estatus, 
+                departamento, tipo, nivel, objetivo, grupo, contenido, comentario, 
+                datos, averia, danio, marca, claveComercial, modelo, tiposGarantia, 
+                solicitante, fechaCreacion, fechaRevision, periodo, agregadoPor, level)) {
             dataBaseHelper.closeConnection();
             return true;
         }

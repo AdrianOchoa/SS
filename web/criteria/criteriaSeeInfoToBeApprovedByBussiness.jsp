@@ -50,7 +50,7 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea class="form-control" name="estatus" placeholder="${criterio.estatus}"></textarea>
+                                <textarea class="form-control" name="estatus" placeholder="">${criterio.estatus}</textarea>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea class="form-control" name="departamento" placeholder="${criterio.departamento}"></textarea>
+                                <textarea class="form-control" name="departamento" placeholder="">${criterio.departamento}</textarea>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea class="form-control" name="tipo" placeholder="${criterio.tipo}"></textarea>
+                                <textarea class="form-control" name="tipo" placeholder="">${criterio.tipo}</textarea>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea class="form-control" name="nivel" placeholder="${criterio.nivel}"></textarea>
+                                <textarea class="form-control" name="nivel" placeholder="">${criterio.nivel}</textarea>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea class="form-control" name="contenido" placeholder="${criterio.contenido}"></textarea>
+                                <textarea class="form-control" name="contenido" placeholder="">${criterio.contenido}</textarea>
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,8 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input name="averia" placeholder="${criterio.averia}" class="form-control"  type="text">
+                                <!--<input name="averia" placeholder="${criterio.averia}" class="form-control"  type="text">-->
+                                <textarea class="form-control" name="averia" placeholder="Datos a detener">${criterio.averia}</textarea>
                             </div>
                         </div>
                     </div>
@@ -149,7 +150,8 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input name="dano" placeholder="${criterio.danio}" class="form-control"  type="text">
+                                <!--<input name="dano" placeholder="${criterio.danio}" class="form-control"  type="text">-->
+                                <textarea class="form-control" name="dano" placeholder="Datos a detener">${criterio.danio}</textarea>
                             </div>
                         </div>
                     </div>
@@ -160,7 +162,7 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea class="form-control" name="marca" placeholder="${criterio.marca}"></textarea>
+                                <textarea class="form-control" name="marca" placeholder="">${criterio.marca}</textarea>
                             </div>
                         </div>
                     </div>
@@ -171,7 +173,7 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea class="form-control" name="clave_comercial" placeholder="${criterio.claveComercial}"></textarea>
+                                <textarea class="form-control" name="clave_comercial" placeholder="">${criterio.claveComercial}</textarea>
                             </div>
                         </div>
                     </div>
@@ -182,7 +184,8 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input name="modelo" placeholder="${criterio.modelo}" class="form-control"  type="text">
+                                <!--<input name="modelo" placeholder="" class="form-control"  type="text">-->
+                                <textarea class="form-control" name="modelo" placeholder="">${criterio.modelo}</textarea>
                             </div>
                         </div>
                     </div>
@@ -193,7 +196,7 @@
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea class="form-control" name="tipo_garantia" placeholder="${criterio.garantiaAfecta}"></textarea>
+                                <textarea class="form-control" name="tipo_garantia" placeholder="">${criterio.garantiaAfecta}</textarea>
                             </div>
                         </div>
                     </div>

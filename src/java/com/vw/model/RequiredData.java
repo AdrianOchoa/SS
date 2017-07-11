@@ -88,6 +88,7 @@ public class RequiredData {
         claimTypes.put("claim_numero_reclamacion", "string");
         claimTypes.put("claim_serial", "string");
         claimTypes.put("claim_manufacturer", "string");
+        claimTypes.put("claim_produc", "string");
         claimTypes.put("claim_iso_land", "string");
         claimTypes.put("claim_importer", "string");
         claimTypes.put("claim_dealer", "string");
@@ -120,7 +121,6 @@ public class RequiredData {
         dataTypes.put("dwh_fecha_pago", "date");
         dataTypes.put("dwh_platform", "string");
         dataTypes.put("dwh_n_at", "string");
-        dataTypes.put("dwh_damage_code", "string");
         dataTypes.put("dwh_descripcion", "string");
         dataTypes.put("dwh_spare_part_description", "string");
         dataTypes.put("dwh_claim_adjuster", "string");
@@ -131,6 +131,7 @@ public class RequiredData {
         dataTypes.put("dwh_mat_ext_sin_profit", "double");
         dataTypes.put("dwh_total_sin_profit", "double");
         dataTypes.put("dwh_total_pagado", "double");
+        dataTypes.put("dwh_productora", "string");
     }
     
     private void initMonthlyTypes () {
@@ -164,7 +165,7 @@ public class RequiredData {
                 + "*criterionversion03*criterionversion04*criterionversion05"
                 + "*criterionversion06*criterionversion07*criterionversion08"
                 + "*criterionversion09*criterionversion10");
-        roc.put("roc_amount", "amountcalculculatedwf1impcurrency");
+        roc.put("roc_amount", "amountcalculatedwf1impcurrency");
         roc.put("roc_imp_currency", "wf1impcurrency");
     }
     
@@ -199,6 +200,7 @@ public class RequiredData {
         claim.put("claim_numero_reclamacion", "claim_no");
         claim.put("claim_serial", "serial_no");
         claim.put("claim_manufacturer", "manufacturer");
+        claim.put("claim_produc", "prod");
         claim.put("claim_iso_land", "iso_land");
         claim.put("claim_importer", "importer");
         claim.put("claim_dealer", "dealer");
@@ -231,7 +233,6 @@ public class RequiredData {
         data.put("dwh_fecha_pago", "pago");
         data.put("dwh_platform", "platform");
         data.put("dwh_n_at", "at");
-        data.put("dwh_damage_code", "damagecode");
         data.put("dwh_descripcion", "descripcion");
         data.put("dwh_spare_part_description", "sparepartdescriptionsp");
         data.put("dwh_claim_adjuster", "claimadjuster");
@@ -242,6 +243,7 @@ public class RequiredData {
         data.put("dwh_mat_ext_sin_profit", "matextsinprofit");
         data.put("dwh_total_sin_profit", "totalsinprofit");
         data.put("dwh_total_pagado", "totalpagadomxn");
+        data.put("dwh_productora", "productionsubsidiary");
     }
     
     private void initMonthlyRoc() {

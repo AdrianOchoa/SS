@@ -22,7 +22,7 @@
 
         <!-- customized files -->
         <script src="${pageContext.request.contextPath}/js/table.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/js/prepareToExport.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/js/tableToExcel.js" type="text/javascript"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/table.css" type="text/css">
 
         <!-- check session script -->
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <div class="col-md-4 selectContainer">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             <select name="mes" class="form-control selectpicker" required>
                                 <option value="" >Seleccione el mes</option>
                                 <option>Enero</option>
@@ -75,7 +75,7 @@
                     <div class="form-group">
                         <div class="col-md-4 selectContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 <select name="anio" class="form-control selectpicker" required>
                                     <option value="" >Seleccione el año</option>
                                     <option>2016</option>
@@ -93,7 +93,7 @@
                 <div class="form-group">
                     <div class="col-md-4 selectContainer">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             <select name="mesFin" class="form-control selectpicker" required>
                                 <option value="" >Seleccione el mes</option>
                                 <option>Enero</option>
@@ -114,7 +114,7 @@
                     <div class="form-group">
                         <div class="col-md-4 selectContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 <select name="anioFin" class="form-control selectpicker" required>
                                     <option value="" >Seleccione el año</option>
                                     <option>2016</option>
@@ -152,6 +152,7 @@
                                     <th class="text-center text-nowrap">MONTO</th>
                                     <th class="text-center text-nowrap">SOLICITANTE</th>
                                     <th class="text-center text-nowrap">MARCA</th>
+                                    <th class="text-center text-nowrap">NIVEL</th>
                                     <th class="text-center text-nowrap">DIAS DE ACTIVACION</th>
                                     <th class="text-center text-nowrap">DETALLES</th>
                                 </tr>
@@ -166,6 +167,7 @@
                                         <td>${element.monto}</td>
                                         <td>${element.solicitante}</td>
                                         <td>${element.marca}</td>
+                                        <td class="text-center text-nowrap">${element.level}</td>
                                         <td>${element.diasActivacion}</td>
                                         <td class="text-center text-nowrap">
                                             <input name="id" type="hidden" value="${element.id}">

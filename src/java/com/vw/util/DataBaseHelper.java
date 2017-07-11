@@ -38,7 +38,7 @@ public class DataBaseHelper {
      * this constructor builds the url to the data base
      */
     public DataBaseHelper() {
-        dbURL = "jdbc:sqlserver://VW-PC\\SQLEXPRESS:1433;databaseName=criterios_logicos;user=sa;password=DinamoKof1#";
+        dbURL = "jdbc:sqlserver://LPVW5306R5F\\SQLEXPRESS:1433;databaseName=criterios_logicos;user=sa;password=Volkswagen1";
     }
 
     /**
@@ -232,7 +232,7 @@ public class DataBaseHelper {
             String estatus, String departamento, String tipo, String nivel, String objetivo,
             String grupo, String contenido, String comentario, String datos, String averia,
             String danio, String marca, String claveComercial, String modelo, String tiposGarantia,
-            String solicitante, String fechaCreacion, String fechaRevision, int periodo, String agregadoPor) {
+            String solicitante, String fechaCreacion, String fechaRevision, int periodo, String agregadoPor, String level) {
         String queryContent = "INSERT INTO [criterios_logicos].[dbo].[criterio]\n"
                 + "           ([criterio_ID]\n"
                 + "           ,[criterio_id_nuevo]\n"
@@ -257,7 +257,7 @@ public class DataBaseHelper {
                 + "           ,[criterio_fecha_revision]\n"
                 + "           ,[criterio_periodo_revision]\n"
                 + "           ,[criterio_agregado_por]\n"
-                + "           ,[criterio_aprobado])\n"
+                + "           ,[criterio_aprobado], [criterio_leve])\n"
                 + "     VALUES\n"
                 + "           ('" + id + "'\n"
                 + "           ,'" + idNuevo + "'\n"
@@ -282,7 +282,7 @@ public class DataBaseHelper {
                 + "           ,'" + fechaRevision + "'\n"
                 + "           ," + periodo + "\n"
                 + "           ,'" + agregadoPor + "'\n"
-                + "           ,'n')";
+                + "           ,'n', '" + level + "')";
         return executeQuery(queryContent, false);
     }
 
@@ -527,8 +527,8 @@ public class DataBaseHelper {
             String newID = entry.getKey();
             String oldID = entry.getValue();
             if (!activeCriteriaFromMonthlyRoc.containsKey(newID)
-                    && activeCriteriaFromMonthlyRoc.containsKey(oldID)) {
-                String criteriaID = newID + "*" + oldID;
+                    && !activeCriteriaFromMonthlyRoc.containsKey(oldID)) {
+                String criteriaID = newID + "/" + oldID;
                 String criteriaMessage = "El criterio " + criteriaID
                         + " se encuentra activo en la base de datos y no hay "
                         + "coincidencia en el archivo ROC Mensual.";
@@ -838,7 +838,10 @@ public class DataBaseHelper {
             com.vw.model.ResultSet res = entry.getValue();
             DecimalFormat decimalFormat = new DecimalFormat();
             decimalFormat.setMaximumFractionDigits(2);
+            //double va=amountsByIdCriteria.get(criteriaID);            
             String amount = "$" + decimalFormat.format(amountsByIdCriteria.get(criteriaID));
+            if(amount.equals("$-0"))
+                amount="$0";
             res.setMonto(amount);
             auxResult.put(criteriaID, res);
         }
@@ -1275,8 +1278,9 @@ public class DataBaseHelper {
         String applicant = getCriteriaApplicant(criteriaID);
         String brand = getCriteriaBrand(criteriaID).toUpperCase();
         String daysSinceActivation = getCriteriaDaysSinceActivation(criteriaID);
+        String level = getCriteriaLevel(criteriaID);
         return new com.vw.model.ResultSet(criteriaID, criteriaType, hitNumber,
-                amount, applicant, brand, daysSinceActivation);
+                amount, applicant, brand, daysSinceActivation, level);
     }
 
     private com.vw.model.ResultSet getResultSetFromCanceledRoc(boolean isIntelligentCriteria,
@@ -1287,8 +1291,9 @@ public class DataBaseHelper {
         String applicant = getCriteriaApplicant(criteriaID);
         String brand = getCriteriaBrand(criteriaID).toUpperCase();
         String daysSinceActivation = getCriteriaDaysSinceActivation(criteriaID);
+        String level = getCriteriaLevel(criteriaID);
         return new com.vw.model.ResultSet(criteriaID, criteriaType, hitNumber,
-                amount, applicant, brand, daysSinceActivation);
+                amount, applicant, brand, daysSinceActivation, level);
     }
 
     /**
@@ -1310,8 +1315,9 @@ public class DataBaseHelper {
         String applicant = getCriteriaApplicant(criteriaID);
         String brand = getCriteriaBrand(criteriaID).toUpperCase();
         String daysSinceActivation = getCriteriaDaysSinceActivation(criteriaID);
+        String level = getCriteriaLevel(criteriaID);
         return new com.vw.model.ResultSet(criteriaID, criteriaType, hitNumber,
-                amount, applicant, brand, daysSinceActivation);
+                amount, applicant, brand, daysSinceActivation, level);
     }
 
     /**
@@ -1333,8 +1339,9 @@ public class DataBaseHelper {
         String applicant = getCriteriaApplicant(criteriaID);
         String brand = getCriteriaBrand(criteriaID).toUpperCase();
         String daysSinceActivation = getCriteriaDaysSinceActivation(criteriaID);
+        String level = getCriteriaLevel(criteriaID);
         return new com.vw.model.ResultSet(criteriaID, criteriaType, hitNumber,
-                amount, applicant, brand, daysSinceActivation);
+                amount, applicant, brand, daysSinceActivation, level);
     }
 
     /**
@@ -1380,6 +1387,31 @@ public class DataBaseHelper {
         try {
             while (resultSet.next()) {
                 brand = resultSet.getString("criterio_marca");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return brand;
+    }
+    
+    /**
+     * This method will return the brand of an especific criteria from the
+     * criteria table It's used in the
+     * getResultSetFromRoc/getResultSetFromDataDWarehouse methods
+     *
+     * @param criteriaID
+     * @return
+     */
+    private String getCriteriaLevel(String criteriaID) {
+        String brand = "";
+        String queryContent = "SELECT [criterio_level]\n"
+                + "FROM [criterios_logicos].[dbo].[criterio]\n"
+                + "WHERE [criterio_id_nuevo] = '" + criteriaID + "'\n"
+                + "OR [criterio_id_viejo] = '" + criteriaID + "'";
+        ResultSet resultSet = resultSetFromQuery(queryContent);
+        try {
+            while (resultSet.next()) {
+                brand = resultSet.getString("criterio_level");
             }
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -1965,7 +1997,7 @@ public class DataBaseHelper {
 
         //This part will get the data warehouse claims
         queryContent = "SELECT [dwh_id], "
-                + "[dwh_productora], [dwh_marca]\n"//Esto se cambia por el nuevo campo de javi
+                + "[dwh_productora], [dwh_marca]\n"
                 + "FROM [criterios_logicos].[dbo].[dwh]\n"
                 + "WHERE [dwh_fecha_reclamacion] BETWEEN '"
                 + initalDate + "' AND '" + finalDate + "'";
@@ -1978,7 +2010,7 @@ public class DataBaseHelper {
                         ? "A" : (marca.equals("seat"))
                         ? "S" : (marca.equals("nfz"))
                         ? "N" : "V";
-                String fabricante = marca + resultSet.getString("dwh_productora").toUpperCase();//Esto también
+                String fabricante = marca + resultSet.getString("dwh_productora").toUpperCase();
                 if (!claims.containsKey(id)) {
                     claims.put(id, id);
                     if (!productoras.containsKey(fabricante)) {
@@ -2036,7 +2068,10 @@ public class DataBaseHelper {
         try {
             while (resultSet.next()) {
                 String id = resultSet.getString("claim_ID");
-                String fabricante = resultSet.getString("claim_manufacturer") + resultSet.getString("claim_produc");
+                String fabricante = resultSet.getString("claim_manufacturer");
+                String rest = resultSet.getString("claim_produc");
+                rest = (rest.length() == 3) ? "0" + rest : rest;
+                fabricante += rest;
                 if (!claims.containsKey(id)) {
                     claims.put(id, id);
                     if (!productoras.containsKey(fabricante)) {

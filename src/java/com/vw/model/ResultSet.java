@@ -2,16 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.vw.model;
 
 /**
- * This class is a data container that will be filled with the data for the 
+ * This class is a data container that will be filled with the data for the
  * general reports
+ *
  * @author Adrián Ochoa Martínez
  */
 public class ResultSet implements Comparable<ResultSet> {
-    
+
     private String id;
     private String tipoCriterio;
     private String numeroHits;
@@ -19,13 +19,13 @@ public class ResultSet implements Comparable<ResultSet> {
     private String solicitante;
     private String marca;
     private String diasActivacion;
-    
-    public ResultSet () {
-        
+    private String level;
+
+    public ResultSet() {
     }
-    
-    public ResultSet (String id, String tipoCriterio, String numeroHits, String monto,
-            String solicitante, String marca, String diasActivacion) {
+
+    public ResultSet(String id, String tipoCriterio, String numeroHits, String monto,
+            String solicitante, String marca, String diasActivacion, String level) {
         this.id = id;
         this.tipoCriterio = tipoCriterio;
         this.numeroHits = numeroHits;
@@ -33,6 +33,7 @@ public class ResultSet implements Comparable<ResultSet> {
         this.solicitante = solicitante;
         this.marca = marca;
         this.diasActivacion = diasActivacion;
+        this.level = level;
     }
 
     /**
@@ -135,7 +136,25 @@ public class ResultSet implements Comparable<ResultSet> {
 
     @Override
     public int compareTo(ResultSet o) {
-        return this.id.compareTo(o.id);
+        if ((Double.parseDouble(o.monto.replace("$", "").replace(",", "")) == Double.parseDouble(this.monto.replace("$", "").replace(",", "")))) {
+            return this.id.compareTo(o.id);
+        } else {
+            return (int) ((int) Double.parseDouble(o.monto.replace("$", "").replace(",", "")) - Double.parseDouble(this.monto.replace("$", "").replace(",", "")));
+        }
+       // return o.monto.compareTo(this.monto);
     }
 
+    /**
+     * @return the level
+     */
+    public String getLevel() {
+        return level;
+    }
+
+    /**
+     * @param level the level to set
+     */
+    public void setLevel(String level) {
+        this.level = level;
+    }
 }
